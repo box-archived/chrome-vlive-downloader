@@ -1,0 +1,43 @@
+html, body {
+    height: 100%;
+}
+body {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background-color: #f5f5f5;
+}
+.content {
+    border: var(--primary) 1px solid;
+    border-radius: 15px;
+    box-shadow: 3px 3px 10px #1b1e2126;
+    width: 100%;
+    max-width: 500px;
+    padding: 15px;
+    margin: auto;
+}
+.content > img {
+    width: 72px;
+    height: 72px;
+}
+.animate {
+    transition-timing-function: ease;
+    transition: height 0.5s;
+}
+#downloadDisplay {
+    height: 90px;
+}
+#result {
+    display: none;
+    visibility: hidden;
+}
+
+.closeDiv {
+    height: 32px!important;
+}
+.closeDivError {
+    height: 0!important;
+}

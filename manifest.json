@@ -1,0 +1,18 @@
+{
+   "author": "Box_Archived",
+   "browser_action": {
+      "default_icon": {
+         "128": "icon128.png",
+         "16": "icon16.png",
+         "256": "icon256.png",
+         "48": "icon48.png"
+      },
+      "default_popup": "popup.html",
+      "default_title": "VLive Downloader"
+   },
+   "description": "Download V Live VOD and post attached video",
+   "manifest_version": 2,
+   "name": "VLive Downloader",
+   "permissions": [ "downloads", "activeTab" ],
+   "version": "1.0.0"
+}
