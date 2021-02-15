@@ -90,20 +90,30 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
                 const vodId = videoPost.data['officialVideo']['vodId'];
 
                 // Load inKey
-                let params = {
+                let inKeyParams = {
                     "appId": appId,
                     "platformType": "PC",
                     "gcc": "KR",
                     "locale": "ko_KR"
                 };
                 if(localStorage.getItem('vpdid2') != null) {
-                    params.vpdid2 = localStorage.getItem('vpdid2');
+                    inKeyParams.vpdid2 = localStorage.getItem('vpdid2');
                 }
                 let inKey = await ajaxGetJSON(encodedUrl(
                     `https://www.vlive.tv/globalv-web/vam-web/video/v1.0/vod/${videoSeq}/inkey`,
-                    params
-                ));
+                    inKeyParams
+                )).catch(() => raiseError("E1"));
                 inKey = inKey.data.inkey;
+
+                // Load VOD
+                const vodData = await ajaxGetJSON(encodedUrl(
+                    `https://apis.naver.com/rmcnmv/rmcnmv/vod/play/v2.0/${vodId}`,
+                    {
+                        "key": inKey,
+                        "videoId": vodId
+                    })).catch(() => raiseError("E1"));
+
+                console.log(vodData.data)
             } else {
                 // Thumbnail Download
                 raiseError("E12")
@@ -139,3 +149,7 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
     }
 
 })();
+/*
+webvtt to srt (TC)
+replaceAll(/(?<=\d{2}:\d{2}:\d{2}).(?=\d{3})/gm, ",")
+*/
