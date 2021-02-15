@@ -15,6 +15,16 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
         }
     };
 
+    const retryResult = function () {
+        window.__VD_RESULT__ = {
+            "working": false,
+            "success": false,
+            "message": "오류가 발생했습니다. 다시 시도해 주세요.",
+            "type": "ERROR",
+            "data": {}
+        }
+    };
+
     // Main
     const url = window.location.href;
 
