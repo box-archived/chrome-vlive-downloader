@@ -60,6 +60,15 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
         return formatted
     };
 
+    const downloadPost = function (url) {
+        const postId = url.match(/(?<=post\/)[\d-]+/)
+    };
+
+    const downloadVideo = function (url) {
+        const videoSeq = url.match(/(?<=video\/)[\d]+/)
+
+    };
+
     // Main
     const url = window.location.href;
 
