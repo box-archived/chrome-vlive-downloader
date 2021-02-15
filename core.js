@@ -25,6 +25,25 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
         }
     };
 
+    const ajaxGetJSON = function (url) {
+        return new Promise(function (resolve, reject) {
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", url);
+
+            // Set result
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    resolve(JSON.parse(xhr.responseText));
+                } else {
+                    reject()
+                }
+            };
+
+            // send
+            xhr.send();
+        });
+    };
+
     // Main
     const url = window.location.href;
 
