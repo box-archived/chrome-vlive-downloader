@@ -86,7 +86,28 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
         )).catch(() => raiseError("E1"));
 
         if(videoPost.code === 200) {
+            if("vodId" in videoPost.data['officialVideo']) {
+                const vodId = videoPost.data['officialVideo']['vodId'];
 
+                // Load inKey
+                let params = {
+                    "appId": appId,
+                    "platformType": "PC",
+                    "gcc": "KR",
+                    "locale": "ko_KR"
+                };
+                if(localStorage.getItem('vpdid2') != null) {
+                    params.vpdid2 = localStorage.getItem('vpdid2');
+                }
+                let inKey = await ajaxGetJSON(encodedUrl(
+                    `https://www.vlive.tv/globalv-web/vam-web/video/v1.0/vod/${videoSeq}/inkey`,
+                    params
+                ));
+                inKey = inKey.data.inkey;
+            } else {
+                // Thumbnail Download
+                raiseError("E12")
+            }
         } else {
             raiseError("E20")
         }
