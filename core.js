@@ -65,7 +65,33 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
     };
 
     const downloadVideo = function (url) {
-        const videoSeq = url.match(/(?<=video\/)[\d]+/)
+        const videoSeq = url.match(/(?<=video\/)[\d]+/);
+
+        // Load Video Data
+        ajaxGetJSON(encodedUrl(
+            `https://www.vlive.tv/globalv-web/vam-web/post/v1.0/officialVideoPost-${videoSeq}`,
+            {
+                "appId": appId,
+                "fields": "attachments,author,authorId,availableActions,board{boardId,title,boardType," +
+                    "readAllowedLabel,payRequired,includedCountries,excludedCountries},boardId,body," +
+                    "channel{channelName,channelCode},channelCode,commentCount,contentType,createdAt," +
+                    "emotionCount,excludedCountries,includedCountries,isViewerBookmarked,isCommentEnabled," +
+                    "isHiddenFromStar,lastModifierMember,notice,officialVideo,originPost,plainBody,postId," +
+                    "postVersion,reservation,starReactions,targetMember,targetMemberId,thumbnail,title,url," +
+                    "smartEditorAsHtml,viewerEmotionId,writtenIn,playlist.limit(30)",
+                "gcc": "KR",
+                "locale": "ko_KR"
+            }
+        )).then(
+            //
+            function (data) {
+                if("vodId" in data['officialVideo']) {
+                    // has video
+                } else {
+                    // is on_air
+                }
+            }
+        );
     };
 
     // Main
@@ -78,9 +104,9 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
     let result;
     if(urlInfo[0]) {
         if(urlInfo[1] === "POST") {
-            result = downloadPost()
+            result = downloadPost(url)
         } else if(urlInfo[1] === "VIDEO") {
-            result = downloadVideo()
+            result = downloadVideo(url)
         } else {
             result = {
                 "working": false,
