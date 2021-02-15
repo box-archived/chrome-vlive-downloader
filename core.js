@@ -44,6 +44,22 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
         });
     };
 
+    const encodedUrl = function (url, params) {
+        let count = 0;
+        let formatted = url;
+        for (const [key, value] of Object.entries(params)) {
+            if(count === 0) {
+                formatted += "?"
+            } else {
+                formatted += "&"
+            }
+            formatted += (key + "=" + value);
+            count++
+        }
+
+        return formatted
+    };
+
     // Main
     const url = window.location.href;
 
