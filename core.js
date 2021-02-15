@@ -61,7 +61,7 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
     };
 
     const downloadPost = async function (url) {
-        const postId = url.match(/(?<=post\/)[\d-]+/)
+        // const postId = url.match(/(?<=post\/)[\d-]+/)
     };
 
     const downloadVideo = async function (url) {
