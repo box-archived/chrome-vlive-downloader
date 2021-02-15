@@ -88,7 +88,7 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
                 if("vodId" in data['officialVideo']) {
                     // has video
                 } else {
-                    // is on_air
+                    raiseError("E12")
                 }
             }
         );
@@ -107,15 +107,15 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
         } else if(urlInfo[1] === "VIDEO") {
             downloadVideo(url)
         } else {
-            raiseError("알 수 없는 오류");
+            raiseError("E0");
         }
     } else {
         if (urlInfo[1] === "IN") {
-            raiseError("VIDEO나 POST가 아닙니다")
+            raiseError("E11")
         } else if (urlInfo[1] === "OUT") {
-            raiseError("VLIVE 웹사이트가 아닙니다")
+            raiseError("E10")
         } else {
-            raiseError("알 수 없는 오류")
+            raiseError("E0")
         }
     }
 
