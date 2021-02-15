@@ -61,6 +61,34 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
         return formatted
     };
 
+    const processStreamList = function (streams) {
+        let streamParams = {};
+        let streamList = [];
+
+        // parse params
+        streams.keys.forEach(item => streamParams[item.name] = item.value);
+
+        streams.videos.forEach(item => streamList.push({
+            "name": item['encodingOption']['name'],
+            "src": encodedUrl(item['source'], streamParams)
+        }));
+
+        streamList.sort(function (a, b) {
+            const h_a = a.name.replace("P", "");
+            const h_b = b.name.replace("P", "");
+            const distance = h_a - h_b;
+            if(distance > 0) {
+                return 1
+            } else if (distance < 0) {
+                return -1
+            } else {
+                return 0
+            }
+        });
+
+        return streamList
+    };
+
     const downloadPost = async function (url) {
         // const postId = url.match(/(?<=post\/)[\d-]+/)
     };
@@ -121,6 +149,10 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
                 if("captions" in vodData.data) {
                     result.captions = vodData.data["captions"]["list"]
                 }
+
+                // Process stream info
+                let streamList = processStreamList(vodData.data.streams[0]);
+                console.log(streamList)
             } else {
                 // Thumbnail Download
                 raiseError("E12")
