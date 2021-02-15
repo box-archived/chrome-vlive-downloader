@@ -85,7 +85,12 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
             }
         )).catch(() => raiseError("E1"));
 
+        // construct result
+        let result = {};
+
         if(videoPost.code === 200) {
+            result.title = videoPost.data['title'];
+            result.thumb = videoPost.data['thumb'];
             if("vodId" in videoPost.data['officialVideo']) {
                 const vodId = videoPost.data['officialVideo']['vodId'];
 
@@ -113,7 +118,9 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
                         "videoId": vodId
                     })).catch(() => raiseError("E1"));
 
-                console.log(vodData.data)
+                if("captions" in vodData.data) {
+                    result.captions = vodData.data["captions"]["list"]
+                }
             } else {
                 // Thumbnail Download
                 raiseError("E12")
