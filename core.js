@@ -15,8 +15,8 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
         }
     };
 
-    const errorTemplate = function (message) {
-       return {
+    const raiseError = function (message) {
+        window.__VD_RESULT__ = {
             "working": false,
             "success": false,
             "message": message,
@@ -101,26 +101,22 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
     window.__VD_RESULT__ = {"working": true};
 
     const urlInfo = urlChecker(url);
-    let result;
     if(urlInfo[0]) {
         if(urlInfo[1] === "POST") {
-            result = downloadPost(url)
+            downloadPost(url)
         } else if(urlInfo[1] === "VIDEO") {
-            result = downloadVideo(url)
+            downloadVideo(url)
         } else {
-            result = errorTemplate("알 수 없는 오류");
+            raiseError("알 수 없는 오류");
         }
     } else {
-        if(urlInfo[1] === "IN") {
-            result = errorTemplate("VIDEO나 POST가 아닙니다")
+        if (urlInfo[1] === "IN") {
+            raiseError("VIDEO나 POST가 아닙니다")
         } else if (urlInfo[1] === "OUT") {
-            result = errorTemplate("VLIVE 웹사이트가 아닙니다")
+            raiseError("VLIVE 웹사이트가 아닙니다")
         } else {
-            result = errorTemplate("알 수 없는 오류")
+            raiseError("알 수 없는 오류")
         }
     }
-
-    // Set result
-    window.__VD_RESULT__ = result
 
 })();
