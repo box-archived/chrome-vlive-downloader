@@ -53,7 +53,7 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
             } else {
                 formatted += "&"
             }
-            formatted += (key + "=" + value);
+            formatted += `${key}=${value}`;
             count++
         }
 
@@ -66,7 +66,6 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
 
     const downloadVideo = function (url) {
         const videoSeq = url.match(/(?<=video\/)[\d]+/)
-
     };
 
     // Main
