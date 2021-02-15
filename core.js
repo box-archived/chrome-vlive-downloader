@@ -61,6 +61,19 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
         return formatted
     };
 
+    const resolutionSorter = function (a, b) {
+        const h_a = a.name.replace("P", "");
+        const h_b = b.name.replace("P", "");
+        const distance = h_a - h_b;
+        if(distance > 0) {
+            return 1
+        } else if (distance < 0) {
+            return -1
+        } else {
+            return 0
+        }
+    };
+
     const processStreamList = function (streams) {
         let streamParams = {};
         let streamList = [];
@@ -73,18 +86,7 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
             "src": encodedUrl(item['source'], streamParams)
         }));
 
-        streamList.sort(function (a, b) {
-            const h_a = a.name.replace("P", "");
-            const h_b = b.name.replace("P", "");
-            const distance = h_a - h_b;
-            if(distance > 0) {
-                return 1
-            } else if (distance < 0) {
-                return -1
-            } else {
-                return 0
-            }
-        });
+        streamList.sort(resolutionSorter);
 
         return streamList
     };
@@ -118,7 +120,7 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
 
         if(videoPost.code === 200) {
             result.title = videoPost.data['title'];
-            result.thumb = videoPost.data['thumb'];
+            result.thumb = videoPost.data['officialVideo']['thumb'];
             if("vodId" in videoPost.data['officialVideo']) {
                 const vodId = videoPost.data['officialVideo']['vodId'];
 
@@ -151,8 +153,8 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
                 }
 
                 // Process stream info
-                let streamList = processStreamList(vodData.data.streams[0]);
-                console.log(streamList)
+                result.streams = processStreamList(vodData.data.streams[0]);
+                console.log(result.streams)
             } else {
                 // Thumbnail Download
                 raiseError("E12")
