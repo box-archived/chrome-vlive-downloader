@@ -60,15 +60,15 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
         return formatted
     };
 
-    const downloadPost = function (url) {
+    const downloadPost = async function (url) {
         const postId = url.match(/(?<=post\/)[\d-]+/)
     };
 
-    const downloadVideo = function (url) {
+    const downloadVideo = async function (url) {
         const videoSeq = url.match(/(?<=video\/)[\d]+/);
 
         // Load Video Data
-        ajaxGetJSON(encodedUrl(
+        const videoPost = await ajaxGetJSON(encodedUrl(
             `https://www.vlive.tv/globalv-web/vam-web/post/v1.0/officialVideoPost-${videoSeq}`,
             {
                 "appId": appId,
@@ -82,16 +82,7 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
                 "gcc": "KR",
                 "locale": "ko_KR"
             }
-        )).then(
-            //
-            function (data) {
-                if("vodId" in data['officialVideo']) {
-                    // has video
-                } else {
-                    raiseError("E12")
-                }
-            }
-        );
+        )).catch(() => raiseError("E1"));
     };
 
     // Main
@@ -103,9 +94,9 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
     const urlInfo = urlChecker(url);
     if(urlInfo[0]) {
         if(urlInfo[1] === "POST") {
-            downloadPost(url)
+            downloadPost(url).then()
         } else if(urlInfo[1] === "VIDEO") {
-            downloadVideo(url)
+            downloadVideo(url).then()
         } else {
             raiseError("E0");
         }
