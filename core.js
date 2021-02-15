@@ -32,8 +32,8 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
 
             // Set result
             xhr.onload = function () {
-                if (xhr.status === 200) {
-                    resolve(JSON.parse(xhr.responseText));
+                if (xhr.status === 200 || xhr.status === 403) {
+                    resolve({code: xhr.status, data: JSON.parse(xhr.responseText)});
                 } else {
                     reject()
                 }
@@ -83,6 +83,12 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
                 "locale": "ko_KR"
             }
         )).catch(() => raiseError("E1"));
+
+        if(videoPost.code === 200) {
+
+        } else {
+            raiseError("E20")
+        }
     };
 
     // Main
