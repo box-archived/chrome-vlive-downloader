@@ -184,8 +184,13 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
                 result.message = "";
                 window.__VD_RESULT__ = result;
             } else {
-                // Thumbnail Download
-                raiseError("E12")
+                if(videoItem.thumb.search(/live\/[\d-]*\/thumb/) !== -1) {
+                    raiseError("E21")
+                }
+                result.data.push(videoItem);
+                result.success = true;
+                result.message = "";
+                console.log(result);
             }
         } else {
             raiseError("E20")
