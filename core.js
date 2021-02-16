@@ -283,7 +283,6 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
             result.data.push(videoItem);
             result.success = true;
             result.message = "";
-            console.log(result);
         }
     };
 
