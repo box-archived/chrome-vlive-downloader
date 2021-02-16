@@ -21,7 +21,7 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
             "success": false,
             "message": message,
             "type": "ERROR",
-            "data": {}
+            "data": []
         };
         throw new Error(`[CODE: ${message}] VLIVE DOWNLOADER`)
     };
@@ -91,6 +91,19 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
         return streamList
     };
 
+    const processVideoList = function (videos) {
+        let videoList = [];
+
+        videos.list.forEach(item => videoList.push({
+            "name": item['encodingOption']['name'],
+            "src": item['source']
+        }));
+
+        videoList.sort(resolutionSorter);
+
+        return videoList
+    };
+
     const downloadPost = async function (url) {
         // const postId = url.match(/(?<=post\/)[\d-]+/)
     };
@@ -115,12 +128,17 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
             }
         )).catch(() => raiseError("E1"));
 
-        // construct result
-        let result = {};
-
         if(videoPost.code === 200) {
+            let result = {
+                "working": false,
+                "type": "VIDEO",
+                "data": []
+            };
+
+            let videoItem = {};
+
             result.title = videoPost.data['title'];
-            result.thumb = videoPost.data['officialVideo']['thumb'];
+            videoItem.thumb = videoPost.data['officialVideo']['thumb'];
             if("vodId" in videoPost.data['officialVideo']) {
                 const vodId = videoPost.data['officialVideo']['vodId'];
 
@@ -153,8 +171,18 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
                 }
 
                 // Process stream info
-                result.streams = processStreamList(vodData.data.streams[0]);
-                console.log(result.streams)
+                videoItem.streams = processStreamList(vodData.data.streams[0]);
+
+                // Process video info
+                videoItem.videos = processVideoList(vodData.data.videos);
+
+                videoItem.maxKey = videoItem.streams.length - 1;
+
+                // return result
+                result.data.push(videoItem);
+                result.success = true;
+                result.message = "";
+                window.__VD_RESULT__ = result;
             } else {
                 // Thumbnail Download
                 raiseError("E12")
