@@ -125,6 +125,7 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
             }
         )).catch(() => raiseError("E1"));
 
+        // Filtering Errors
         // Raise error when permission error
         if(postData.code !== 200) {
             raiseError("E20");
@@ -137,7 +138,61 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
             return;
         }
 
-        console.log(postData)
+        // Raise error when post's videoCount is 0
+        if(postData.data['attachments']['videoCount'] === 0){
+            raiseError("E13");
+            return;
+        }
+
+        // Start load post
+        // Construct result
+        let result = {
+            "working": false,
+            "type": "POST",
+            "data": [],
+            "title": postData.data.title
+        };
+
+        // Parse video
+        for (const value of Object.values(postData.data['attachments']['video'])) {
+            // Init video item
+            let videoItem = {};
+            videoItem.thumb = value['uploadInfo']['imageUrl'];
+
+            // Load file video data
+            const videoData = await ajaxGetJSON(encodedUrl(
+                `https://www.vlive.tv/globalv-web/vam-web/fvideo/v1.0/fvideo-${value['videoId']}/playInfo`,
+                {
+                    "appId": appId,
+                    "gcc": "KR",
+                    "locale": "ko_KR"
+                }
+            ));
+
+
+            // Start parsing data
+            // Parse Caption
+            if("captions" in videoData.data['playInfo']) {
+                videoItem.captions = videoData.data['playInfo']["captions"]["list"]
+            }
+
+            // Process stream info
+            videoItem.streams = processStreamList(videoData.data['playInfo'].streams[0]);
+
+            // Process video info
+            videoItem.videos = processVideoList(videoData.data['playInfo'].videos);
+
+            videoItem.maxIdx = videoItem.streams.length - 1;
+
+
+            result.data.push(videoItem)
+        }
+
+        // return result
+        result.success = true;
+        result.message = "";
+        window.__VD_RESULT__ = result;
+
     };
 
     const downloadVideo = async function (url) {
@@ -213,7 +268,7 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
             // Process video info
             videoItem.videos = processVideoList(vodData.data.videos);
 
-            videoItem.maxKey = videoItem.streams.length - 1;
+            videoItem.maxIdx = videoItem.streams.length - 1;
 
             // return result
             result.data.push(videoItem);
