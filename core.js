@@ -105,7 +105,27 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
     };
 
     const downloadPost = async function (url) {
-        // const postId = url.match(/(?<=post\/)[\d-]+/)
+        const postId = url.match(/(?<=post\/)[\d-]+/);
+
+        // Load Post Data
+        const postData = await ajaxGetJSON(encodedUrl(
+            `https://www.vlive.tv/globalv-web/vam-web/post/v1.0/post-${postId}`,
+            {
+                "appId": appId,
+                "fields": "attachments,author,authorId,availableActions,board{boardId,title,boardType," +
+                "readAllowedLabel,payRequired,includedCountries,excludedCountries},boardId," +
+                "body,channel{channelName,channelCode},channelCode,commentCount,contentType," +
+                "createdAt,emotionCount,excludedCountries,includedCountries,isViewerBookmarked," +
+                "isCommentEnabled,isHiddenFromStar,lastModifierMember,notice,officialVideo," +
+                "originPost,plainBody,postId,postVersion,reservation,starReactions,targetMember," +
+                "targetMemberId,thumbnail,title,url,smartEditorAsHtml,viewerEmotionId,writtenIn," +
+                "playlist.limit(30)",
+                "gcc": "KR",
+                "locale": "ko_KR"
+            }
+        )).catch(() => raiseError("E1"));
+
+        console.log(postData)
     };
 
     const downloadVideo = async function (url) {
