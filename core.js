@@ -125,6 +125,18 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
             }
         )).catch(() => raiseError("E1"));
 
+        // Raise error when permission error
+        if(postData.code !== 200) {
+            raiseError("E20");
+            return;
+        }
+
+        // routing downloadVideo() when officialVideoPost
+        if("officialVideo" in postData.data) {
+            await downloadVideo(`https://www.vlive.tv/video/${postData.data['officialVideo']['videoSeq']}`);
+            return;
+        }
+
         console.log(postData)
     };
 
