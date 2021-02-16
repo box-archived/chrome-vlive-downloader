@@ -204,7 +204,7 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
                 })).catch(() => raiseError("E1"));
 
             if("captions" in vodData.data) {
-                result.captions = vodData.data["captions"]["list"]
+                videoItem.captions = vodData.data["captions"]["list"]
             }
 
             // Process stream info
