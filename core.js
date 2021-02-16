@@ -148,73 +148,75 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
             }
         )).catch(() => raiseError("E1"));
 
-        if(videoPost.code === 200) {
-            let result = {
-                "working": false,
-                "type": "VIDEO",
-                "data": []
+        // Raise error when permission error
+        if(videoPost.code !== 200) {
+            raiseError("E20");
+            return;
+        }
+
+        let result = {
+            "working": false,
+            "type": "VIDEO",
+            "data": []
+        };
+
+        let videoItem = {};
+
+        result.title = videoPost.data['title'];
+        videoItem.thumb = videoPost.data['officialVideo']['thumb'];
+        if("vodId" in videoPost.data['officialVideo']) {
+            const vodId = videoPost.data['officialVideo']['vodId'];
+
+            // Load inKey
+            let inKeyParams = {
+                "appId": appId,
+                "platformType": "PC",
+                "gcc": "KR",
+                "locale": "ko_KR"
             };
-
-            let videoItem = {};
-
-            result.title = videoPost.data['title'];
-            videoItem.thumb = videoPost.data['officialVideo']['thumb'];
-            if("vodId" in videoPost.data['officialVideo']) {
-                const vodId = videoPost.data['officialVideo']['vodId'];
-
-                // Load inKey
-                let inKeyParams = {
-                    "appId": appId,
-                    "platformType": "PC",
-                    "gcc": "KR",
-                    "locale": "ko_KR"
-                };
-                if(localStorage.getItem('vpdid2') != null) {
-                    inKeyParams.vpdid2 = localStorage.getItem('vpdid2');
-                }
-                let inKey = await ajaxGetJSON(encodedUrl(
-                    `https://www.vlive.tv/globalv-web/vam-web/video/v1.0/vod/${videoSeq}/inkey`,
-                    inKeyParams
-                )).catch(() => raiseError("E1"));
-                inKey = inKey.data.inkey;
-
-                // Load VOD
-                const vodData = await ajaxGetJSON(encodedUrl(
-                    `https://apis.naver.com/rmcnmv/rmcnmv/vod/play/v2.0/${vodId}`,
-                    {
-                        "key": inKey,
-                        "videoId": vodId
-                    })).catch(() => raiseError("E1"));
-
-                if("captions" in vodData.data) {
-                    result.captions = vodData.data["captions"]["list"]
-                }
-
-                // Process stream info
-                videoItem.streams = processStreamList(vodData.data.streams[0]);
-
-                // Process video info
-                videoItem.videos = processVideoList(vodData.data.videos);
-
-                videoItem.maxKey = videoItem.streams.length - 1;
-
-                // return result
-                result.data.push(videoItem);
-                result.success = true;
-                result.message = "";
-                window.__VD_RESULT__ = result;
-            } else {
-                if(videoItem.thumb.search(/live\/[\d-]*\/thumb/) !== -1) {
-                    raiseError("E21")
-                }
-                result.type = "LIVE";
-                result.data.push(videoItem);
-                result.success = true;
-                result.message = "";
-                console.log(result);
+            if(localStorage.getItem('vpdid2') != null) {
+                inKeyParams.vpdid2 = localStorage.getItem('vpdid2');
             }
+            let inKey = await ajaxGetJSON(encodedUrl(
+                `https://www.vlive.tv/globalv-web/vam-web/video/v1.0/vod/${videoSeq}/inkey`,
+                inKeyParams
+            )).catch(() => raiseError("E1"));
+            inKey = inKey.data.inkey;
+
+            // Load VOD
+            const vodData = await ajaxGetJSON(encodedUrl(
+                `https://apis.naver.com/rmcnmv/rmcnmv/vod/play/v2.0/${vodId}`,
+                {
+                    "key": inKey,
+                    "videoId": vodId
+                })).catch(() => raiseError("E1"));
+
+            if("captions" in vodData.data) {
+                result.captions = vodData.data["captions"]["list"]
+            }
+
+            // Process stream info
+            videoItem.streams = processStreamList(vodData.data.streams[0]);
+
+            // Process video info
+            videoItem.videos = processVideoList(vodData.data.videos);
+
+            videoItem.maxKey = videoItem.streams.length - 1;
+
+            // return result
+            result.data.push(videoItem);
+            result.success = true;
+            result.message = "";
+            window.__VD_RESULT__ = result;
         } else {
-            raiseError("E20")
+            if(videoItem.thumb.search(/live\/[\d-]*\/thumb/) !== -1) {
+                raiseError("E21")
+            }
+            result.type = "LIVE";
+            result.data.push(videoItem);
+            result.success = true;
+            result.message = "";
+            console.log(result);
         }
     };
 
