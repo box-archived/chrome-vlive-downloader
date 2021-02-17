@@ -12,6 +12,7 @@
    },
    "description": "Download V Live VOD and post attached video",
    "manifest_version": 2,
+   "default_locale": "en",
    "name": "VLive Downloader",
    "permissions": [ "downloads", "activeTab" ],
    "version": "1.0.0"
