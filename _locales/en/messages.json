@@ -1,6 +1,6 @@
 {
-    "popup_title": {
-        "message": "message",
-        "description": "Translator-aimed description of the message."
+    "settings_title": {
+        "message": "Settings",
+        "description": "Title tag text settings"
     }
 }
