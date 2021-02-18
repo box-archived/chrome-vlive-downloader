@@ -1,6 +1,6 @@
 {
-    "settings_title": {
-        "message": "Settings",
-        "description": "Title tag text settings"
+    "alert_unusable": {
+        "message": "No permission to this website",
+        "description": "No permission to website"
     }
 }

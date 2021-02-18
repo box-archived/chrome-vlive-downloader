@@ -13,14 +13,6 @@
  * We do not guarantee any legal responsibility for the use.
  */
 
-body {
-    width: 380px;
-}
-.thumb-prv {
-    object-fit: contain;
-    background-color: black;
-    height: 185.625px;
-}
 .border-round {
     border-radius: 9999px!important;
 }

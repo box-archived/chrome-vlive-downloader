@@ -1,6 +1,6 @@
 {
-    "settings_title": {
-        "message": "설정",
-        "description": "Title tag text settings"
+    "alert_unusable": {
+        "message": "사이트에 접근 권한이 없습니다",
+        "description": "No permission to website"
     }
 }
