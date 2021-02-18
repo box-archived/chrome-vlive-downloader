@@ -53,7 +53,7 @@ async function main() {
                         resolve(vdResult)
                     }
                 })
-            }, 100)
+            }, 25)
         });
     }
 
