@@ -1,6 +1,34 @@
 {
-    "alert_unusable": {
-        "message": "No permission to this website",
-        "description": "No permission to website"
+    "alert_E0": {
+        "message": "[E0] Unknown Error",
+        "description": "Unknown error"
+    },
+    "alert_E1": {
+        "message": "[E1] Network Error",
+        "description": "Network error"
+    },
+    "alert_E10": {
+        "message": "[E10] Current tab is not VLIVE website",
+        "description": "Not vlive link"
+    },
+    "alert_E11": {
+        "message": "[E11] Retry with /video/* or /post/* link",
+        "description": "Not downloadable link"
+    },
+    "alert_E12": {
+        "message": "[E12] VOD Not Found",
+        "description": "VOD not found"
+    },
+    "alert_E13": {
+        "message": "[E13] Current post doesn't have video attachment",
+        "description": "Video attach not found"
+    },
+    "alert_E20": {
+        "message": "[E20] You don't have proper permission to this video/post",
+        "description": "Permission error"
+    },
+    "alert_E21": {
+        "message": "[E21] Current live has live-thumbnail.",
+        "description": "Is live thumbnail"
     }
 }

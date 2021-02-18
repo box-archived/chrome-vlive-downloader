@@ -1,6 +1,34 @@
 {
-    "alert_unusable": {
-        "message": "사이트에 접근 권한이 없습니다",
-        "description": "No permission to website"
+    "alert_E0": {
+        "message": "[E0] 알 수 없는 오류",
+        "description": "Unknown error"
+    },
+    "alert_E1": {
+        "message": "[E1] VLIVE 서버와 통신 중 오류가 발생했습니다",
+        "description": "Network error"
+    },
+    "alert_E10": {
+        "message": "[E10] 현재 탭은 VLIVE 웹사이트가 아닙니다",
+        "description": "Not vlive link"
+    },
+    "alert_E11": {
+        "message": "[E11] /video/* 링크나 /post/* 형태의 링크에서만 사용가능합니다",
+        "description": "Not downloadable link"
+    },
+    "alert_E12": {
+        "message": "[E12] VOD를 찾지 못했습니다",
+        "description": "VOD not found"
+    },
+    "alert_E13": {
+        "message": "[E13] 포스트에서 영상을 찾지 못했습니다",
+        "description": "Video attach not found"
+    },
+    "alert_E20": {
+        "message": "[E20] 이 영상/포스트에 대한 권한이 없습니다",
+        "description": "Permission error"
+    },
+    "alert_E21": {
+        "message": "[E21] 해당 방송은 라이브섬네일이 적용된 영상입니다",
+        "description": "Is live thumbnail"
     }
 }

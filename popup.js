@@ -24,17 +24,27 @@ function hideSpinner() {
     document.querySelector("#spinner").classList.add("disappear");
 }
 
-function sendAlert(i18n, type) {
+function setResultHTML(html, sizing) {
+    const resultNode = document.querySelector("#result");
+    if(sizing){
+        resultNode.classList.add(`px-${sizing}`);
+    }
+    resultNode.innerHTML = html
+}
+
+function renderAlert(i18n, type) {
     if(!type) {
         type = 'primary'
     }
     hideSpinner();
-    const resultSection = document.querySelector("#result");
-    resultSection.classList.add("px-3");
-    resultSection.innerHTML = `<div class="alert alert-${type}" data-i18n="${i18n}">${i18n}</div>`;
+    return `<div class="alert alert-${type}" data-i18n="alert_${i18n}">${i18n}</div>`
 }
 
 function renderDOM(vdResult) {
+    // check result
+    if(vdResult.type === "ERROR") {
+        return renderAlert(`${vdResult.message}`);
+    }
     let html = ``;
     let postModel =
         ``;
@@ -48,9 +58,8 @@ async function main() {
             const checker = setInterval(function () {
                 chrome.tabs.executeScript(null, {code: 'window.__VD_RESULT__'}, function (vdResult) {
                     if(vdResult[0].working === false) {
-                        console.log(vdResult[0]);
                         clearInterval(checker);
-                        resolve(vdResult)
+                        resolve(vdResult[0])
                     }
                 })
             }, 25)
@@ -65,7 +74,7 @@ async function main() {
     }).then(() => {});
     const vdResult = await resultCheck();
 
-    document.querySelector('#result').innerHTML = renderDOM(vdResult);
+    setResultHTML(renderDOM(vdResult));
     hideSpinner()
 }
 
@@ -73,7 +82,7 @@ window.onload = function () {
     new Promise(function (resolve) {
         chrome.tabs.getSelected(null, function(tab) {
             if(tab.url.search(/(?<=chrom)[\-a-z]*:/g) !== -1) {
-                sendAlert("alert_unusable", "danger");
+                setResultHTML(renderAlert("E10", "danger"));
                 resolve()
             } else {
                 main().then(() => {resolve()});
