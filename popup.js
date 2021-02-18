@@ -41,15 +41,27 @@ function renderAlert(i18n, type) {
 }
 
 function renderDOM(vdResult) {
-    // check result
-    if(vdResult.type === "ERROR") {
-        return renderAlert(`${vdResult.message}`);
-    }
-    let html = ``;
-    let postModel =
-        ``;
+    function renderVideoCard(title, video) {
+        let html = ``;
 
-    return html
+    }
+    // check result
+    let html = ``;
+
+    const vdType = vdResult.type;
+    if(vdType === "ERROR") {
+        // setHTML
+        setResultHTML(renderAlert(`${vdResult.message}`, 3));
+    } else if (vdType === "VIDEO" || vdType === "LIVE") {
+        html += renderVideoCard(vdResult.title, vdResult.data[0]);
+
+        // setHTML
+        setResultHTML(html, 3)
+    } else if (vdType === "POST") {
+
+        // setHTML
+        setResultHTML(html)
+    }
 }
 
 async function main() {
@@ -74,7 +86,7 @@ async function main() {
     }).then(() => {});
     const vdResult = await resultCheck();
 
-    setResultHTML(renderDOM(vdResult));
+    renderDOM(vdResult);
     hideSpinner()
 }
 
@@ -82,7 +94,7 @@ window.onload = function () {
     new Promise(function (resolve) {
         chrome.tabs.getSelected(null, function(tab) {
             if(tab.url.search(/(?<=chrom)[\-a-z]*:/g) !== -1) {
-                setResultHTML(renderAlert("E10", "danger"));
+                setResultHTML(renderAlert("E10", "danger"), 3);
                 resolve()
             } else {
                 main().then(() => {resolve()});
