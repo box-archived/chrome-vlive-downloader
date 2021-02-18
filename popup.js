@@ -51,7 +51,7 @@ function renderDOM(vdResult) {
     const vdType = vdResult.type;
     if(vdType === "ERROR") {
         // setHTML
-        setResultHTML(renderAlert(`${vdResult.message}`, 3));
+        setResultHTML(renderAlert(`${vdResult.message}`, "danger"), 3);
     } else if (vdType === "VIDEO" || vdType === "LIVE") {
         html += renderVideoCard(vdResult.title, vdResult.data[0]);
 
