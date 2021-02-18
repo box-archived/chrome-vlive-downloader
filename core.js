@@ -38,7 +38,7 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
             "type": "ERROR",
             "data": []
         };
-        throw new Error(`[CODE: ${message}] VLIVE DOWNLOADER`)
+        // throw new Error(`[CODE: ${message}] VLIVE DOWNLOADER`)
     };
 
     const ajaxGetJSON = function (url) {
