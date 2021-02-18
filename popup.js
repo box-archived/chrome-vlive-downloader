@@ -29,7 +29,9 @@ function sendAlert(i18n, type) {
         type = 'primary'
     }
     hideSpinner();
-    document.querySelector("#result").innerHTML = `<div class="alert alert-${type}" data-i18n="${i18n}">${i18n}</div>`;
+    const resultSection = document.querySelector("#result");
+    resultSection.classList.add("px-3");
+    resultSection.innerHTML = `<div class="alert alert-${type}" data-i18n="${i18n}">${i18n}</div>`;
 }
 
 function renderDOM(vdResult) {
@@ -71,7 +73,7 @@ window.onload = function () {
     new Promise(function (resolve) {
         chrome.tabs.getSelected(null, function(tab) {
             if(tab.url.search(/(?<=chrom)[\-a-z]*:/g) !== -1) {
-                sendAlert("alert_unusable");
+                sendAlert("alert_unusable", "danger");
                 resolve()
             } else {
                 main().then(() => {resolve()});
