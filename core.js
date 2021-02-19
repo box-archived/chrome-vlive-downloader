@@ -35,14 +35,27 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
         };
         resultObj.data.forEach(function (dataItem, index) {
             dataItem.safeName = safeFilename(resultObj.title, true) + "_" + (index + 1);
+            const msFilename = `${safeFilename(resultObj.title)}_${index + 1}`;
+
+            // stream title
             if("streams" in dataItem) {
                 dataItem.streams.forEach(function (streamItem) {
-                    streamItem.filename = `${safeFilename(resultObj.title)}_${index + 1}_${streamItem.name}.ts`
+                    streamItem.filename = `${msFilename}.${streamItem.name}.ts`
                 });
             }
+
+            // video title
             if("videos" in dataItem) {
                 dataItem.videos.forEach(function (videoItem) {
-                    videoItem.filename = `${dataItem.safeName}_${videoItem.name}.mp4`
+                    videoItem.filename = `${dataItem.safeName}.${videoItem.name}.mp4`
+                })
+            }
+            
+            // caption title
+            if("captions" in dataItem) {
+                dataItem.captions.forEach(function (captionItem) {
+                    captionItem.vttname = `${dataItem.safeName}.${captionItem.locale}.vtt`;
+                    captionItem.srtname = `${msFilename}.${captionItem.locale}.srt`
                 })
             }
         })
