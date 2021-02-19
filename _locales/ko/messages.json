@@ -38,5 +38,13 @@
     "card_download_stream": {
         "message": "영상 다운로드",
         "description": "Download video based on stream button on video card"
+    },
+    "card_download_vtt": {
+        "message": "자막 다운로드(.vtt)",
+        "description": "Download vtt caption on video card"
+    },
+    "card_download_srt": {
+        "message": "자막 다운로드(.srt)",
+        "description": "Download srt caption on video card"
     }
 }

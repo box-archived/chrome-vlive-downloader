@@ -38,5 +38,13 @@
     "card_download_stream": {
         "message": "Download Video",
         "description": "Download video based on stream button on video card"
+    },
+    "card_download_vtt": {
+        "message": "Download Subs (.vtt)",
+        "description": "Download vtt caption on video card"
+    },
+    "card_download_srt": {
+        "message": "Download Subs (.srt)",
+        "description": "Download srt caption on video card"
     }
 }

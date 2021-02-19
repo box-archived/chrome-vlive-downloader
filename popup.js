@@ -28,6 +28,10 @@ function streamDownload(obj) {
     console.log(obj.target.dataset)
 }
 
+function srtDownload(obj) {
+    console.log(obj.target.dataset)
+}
+
 function i18nLoader() {
     const elementList = document.querySelectorAll("[data-i18n]");
     elementList.forEach(function (element) {
@@ -64,13 +68,49 @@ function renderVideoCard(title, video) {
 
     // Add stream download
     if(video.streams) {
-        html += `<div class="btn-group w-100"><button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" data-i18n="card_download_stream"></button>`;
+        html += `<div class="btn-group w-100 mb-2"><button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" data-i18n="card_download_stream"></button>`;
         html += `<div class="dropdown-menu">`;
         video.streams.forEach(function (streamItem) {
             html += `<a class="dropdown-item fn-stream-download" href="#" data-url="${streamItem.src}" data-name="${streamItem.filename}">${streamItem.name}</a>`
         });
         html += `</div>`;
         html += `</div>`
+    }
+    // Add caption download
+    if(video.captions) {
+        html += `<hr class="mb-4" />`;
+
+        html += `<div class="mb-2">`;
+
+        // start of vtt captions
+        html += `<div class="btn-group w-100 mb-1"><button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" data-i18n="card_download_vtt"></button>`;
+        html += `<div class="dropdown-menu">`;
+        video.captions.forEach(function (captionItem) {
+            let captionLabel = captionItem.label;
+            if(captionItem.subLabel) {
+                captionLabel += `(${captionItem.subLabel})`
+            }
+            html += `<a class="dropdown-item fn-chrome-download" href="#" data-url="${captionItem.source}" data-name="${captionItem.vttname}">${captionLabel}</a>`
+        });
+        html += "</div>";
+        html += "</div>";
+        // end of vtt caption
+
+        // start of srt captions
+        html += `<div class="btn-group w-100"><button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" data-i18n="card_download_srt"></button>`;
+        html += `<div class="dropdown-menu">`;
+        video.captions.forEach(function (captionItem) {
+            let captionLabel = captionItem.label;
+            if(captionItem.subLabel) {
+                captionLabel += `(${captionItem.subLabel})`
+            }
+            html += `<a class="dropdown-item fn-srt-download" href="#" data-url="${captionItem.source}" data-name="${captionItem.vttname}">${captionLabel}</a>`
+        });
+        html += "</div>";
+        html += "</div>";
+        //end of srt captions
+
+        html += `</div>`;
     }
 
     html += `</div>`;
@@ -144,6 +184,9 @@ window.onload = function () {
             });
             document.querySelectorAll(".fn-stream-download").forEach(function (item) {
                 item.addEventListener("click", streamDownload, this)
+            });
+            document.querySelectorAll(".fn-srt-download").forEach(function (item) {
+                item.addEventListener("click", srtDownload, this)
             });
         }
     )
