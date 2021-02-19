@@ -94,5 +94,17 @@
     "stream_close": {
         "message": "이제 창을 닫아도 됩니다",
         "description": "Close-able text for stream download"
+    },
+    "srt_title": {
+        "message": "srt 자막 다운로드",
+        "description": "Page title for srt download"
+    },
+    "srt_downloading": {
+        "message": "자막 다운로드중...",
+        "description": "vtt downloading text for srt download"
+    },
+    "srt_converting": {
+        "message": "자막 변환중...",
+        "description": "converting text for srt download"
     }
 }

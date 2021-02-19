@@ -94,5 +94,17 @@
     "stream_close": {
         "message": "Now you can close the window",
         "description": "Close-able text for stream download"
+    },
+    "srt_title": {
+        "message": "Download Sub (.srt)",
+        "description": "Page title for srt download"
+    },
+    "srt_downloading": {
+        "message": "Downloading sub...",
+        "description": "vtt downloading text for srt download"
+    },
+    "srt_converting": {
+        "message": "Converting sub...",
+        "description": "converting text for srt download"
     }
 }

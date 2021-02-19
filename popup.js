@@ -31,6 +31,9 @@ function streamDownload(obj) {
 }
 
 function srtDownload(obj) {
+    const encodedName = encodeURIComponent(obj.target.dataset.name);
+    const encodedSrc = encodeURIComponent(obj.target.dataset.url);
+    window.open(`srtDownload.html?langname=${encodedName}&streamsrc=${encodedSrc}`,"_blank");
     console.log(obj.target.dataset)
 }
 
