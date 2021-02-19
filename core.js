@@ -16,6 +16,38 @@
 appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
 (function () {
     // Functions
+    const injectFilename = function (resultObj) {
+        const safeFilename = function (dangerName, removeEmoji=false) {
+            let temp = dangerName;
+            // remove front space
+            temp = temp.replace(/^(\s+)/gs, "");
+            // < > : " / \ | ? *
+            temp = temp.replace(/[<>:"\\\/|?*~]/gi, "_");
+            // remove emoji
+            if(removeEmoji) {
+                temp = temp.replace(new RegExp(/(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/, 'g'), '_');
+            }
+            // cut after 100 letters
+            if (temp.length > 100) {
+                temp = temp.slice(0, 100) + ".."
+            }
+            return temp
+        };
+        resultObj.data.forEach(function (dataItem, index) {
+            dataItem.safeName = safeFilename(resultObj.title, true) + "_" + (index + 1);
+            if("streams" in dataItem) {
+                dataItem.streams.forEach(function (streamItem) {
+                    streamItem.filename = `${safeFilename(resultObj.title)}_${index + 1}_${streamItem.name}.ts`
+                });
+            }
+            if("videos" in dataItem) {
+                dataItem.videos.forEach(function (videoItem) {
+                    videoItem.filename = `${dataItem.safeName}_${videoItem.name}.mp4`
+                })
+            }
+        })
+    };
+
     const urlChecker = function (url) {
         if(url.search("vlive.tv") === -1) {
             return [false, "OUT"]
@@ -206,6 +238,7 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
         // return result
         result.success = true;
         result.message = "";
+        injectFilename(result);
         window.__VD_RESULT__ = result;
 
     };
@@ -298,6 +331,7 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
             result.success = true;
             result.message = "";
         }
+        injectFilename(result);
         window.__VD_RESULT__ = result;
     };
 
