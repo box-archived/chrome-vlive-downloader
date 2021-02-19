@@ -104,7 +104,7 @@ function renderVideoCard(title, video) {
             if(captionItem.subLabel) {
                 captionLabel += `(${captionItem.subLabel})`
             }
-            html += `<a class="dropdown-item fn-srt-download" href="#" data-url="${captionItem.source}" data-name="${captionItem.vttname}">${captionLabel}</a>`
+            html += `<a class="dropdown-item fn-srt-download" href="#" data-url="${captionItem.source}" data-name="${captionItem.srtname}">${captionLabel}</a>`
         });
         html += "</div>";
         html += "</div>";
