@@ -13,6 +13,17 @@
  * We do not guarantee any legal responsibility for the use.
  */
 
+function chromeDownload(obj) {
+    try {
+        chrome.downloads.download({
+            url: obj.target.dataset.url,
+            filename: obj.target.dataset.name
+        })
+    } catch (e) {
+        window.location.reload()
+    }
+}
+
 function i18nLoader() {
     const elementList = document.querySelectorAll("[data-i18n]");
     elementList.forEach(function (element) {
@@ -40,11 +51,20 @@ function renderAlert(i18n, type) {
     return `<div class="alert alert-${type}" data-i18n="alert_${i18n}">${i18n}</div>`
 }
 
-function renderDOM(vdResult) {
-    function renderVideoCard(title, video) {
-        let html = ``;
+function renderVideoCard(title, video) {
+    // build up
+    let html = `<div class="card"><img src="${video.thumb}" class="card-img thumb-prv" alt="Thumbnail"><div class="card-body">`;
 
-    }
+    // Add thumb download
+    html += `<div class="btn-group w-100"><button class="btn btn-outline-info btn-sm fn-chrome-download w-100" type="button" data-i18n="card_download_thumb" data-url="${video.thumb}" data-name="${video.safeName}_thumb.jpg"></button>`;
+
+    html += `</div></div>`;
+
+    return html
+
+}
+
+function renderDOM(vdResult) {
     // check result
     let html = ``;
 
@@ -100,5 +120,13 @@ window.onload = function () {
                 main().then(() => {resolve()});
             }
         });
-    }).then(i18nLoader)
+    }).then(
+        i18nLoader
+    ).then(
+        function() {
+            document.querySelectorAll(".fn-chrome-download").forEach(function (item) {
+                item.addEventListener("click", chromeDownload, this)
+            })
+        }
+    )
 };
