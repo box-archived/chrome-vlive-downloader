@@ -46,7 +46,7 @@ function i18nString(name) {
             const splitItem = line.split("=");
             window[splitItem[0]] = window.decodeURIComponent(splitItem[1])
         });
-        let filename = `${window.streamname}.ts`;
+        let filename = `${window.streamname}`;
         if(filename.length > 30) {
             filename = filename.slice(0, 30) + "..."
         }
