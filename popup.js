@@ -59,9 +59,13 @@ function renderAlert(i18n, type) {
     return `<div class="alert alert-${type}" data-i18n="alert_${i18n}">${i18n}</div>`
 }
 
-function renderVideoCard(title, video) {
+function renderVideoCard(video, only=true) {
     // build up
-    let html = `<div class="card mb-3"><img src="${video.thumb}" class="card-img thumb-prv" alt="Thumbnail"><div class="card-body">`;
+    let mbClass = "";
+    if(only) {
+        mbClass = "mb-3"
+    }
+    let html = `<div class="card ${mbClass}"><img src="${video.thumb}" class="card-img thumb-prv" alt="Thumbnail"><div class="card-body">`;
 
     // Add thumb download
     html += `<div class="btn-group w-100 mb-2"><button class="btn btn-outline-info btn-sm fn-chrome-download w-100" type="button" data-i18n="card_download_thumb" data-url="${video.thumb}" data-name="${video.safeName}_thumb.jpg"></button></div>`;
@@ -132,6 +136,31 @@ function renderVideoCard(title, video) {
 
 }
 
+function renderAccordion(data) {
+    let html = ``;
+    html += `<div class="accordion mb-2" id="videoAccordion">`;
+    data.forEach(function (dataItem, index) {
+        html += `
+        <div class="card">
+        <div class="card-header py-0 px-1" id="header${index}">
+            <h2 class="mb-0">
+                <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse${index}" aria-expanded="false" aria-controls="collapseOne">
+                    #${index + 1}
+                </button>
+            </h2>
+        </div>
+
+        <div id="collapse${index}" class="collapse" aria-labelledby="header${index}" data-parent="#videoAccordion">
+            <div class="card-body">
+                ${renderVideoCard(dataItem, false)}
+            </div>
+        </div>
+    </div>`;
+        html += `</div>`
+    });
+    return html
+}
+
 function renderDOM(vdResult) {
     // check result
     let html = ``;
@@ -141,14 +170,18 @@ function renderDOM(vdResult) {
         // setHTML
         setResultHTML(renderAlert(`${vdResult.message}`, "danger"), 3);
     } else if (vdType === "VIDEO" || vdType === "LIVE") {
-        html += renderVideoCard(vdResult.title, vdResult.data[0]);
+        html += renderVideoCard(vdResult.data[0]);
 
         // setHTML
         setResultHTML(html, 3)
     } else if (vdType === "POST") {
-
-        // setHTML
-        setResultHTML(html)
+        if(vdResult.data.length > 1) {
+            html += renderAccordion(vdResult.data);
+            setResultHTML(html)
+        } else {
+            html += renderVideoCard(vdResult.data[0]);
+            setResultHTML(html, 3)
+        }
     }
 }
 
