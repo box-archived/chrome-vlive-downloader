@@ -24,6 +24,10 @@ function chromeDownload(obj) {
     }
 }
 
+function streamDownload(obj) {
+    console.log(obj.target.dataset)
+}
+
 function i18nLoader() {
     const elementList = document.querySelectorAll("[data-i18n]");
     elementList.forEach(function (element) {
@@ -53,12 +57,23 @@ function renderAlert(i18n, type) {
 
 function renderVideoCard(title, video) {
     // build up
-    let html = `<div class="card"><img src="${video.thumb}" class="card-img thumb-prv" alt="Thumbnail"><div class="card-body">`;
+    let html = `<div class="card mb-3"><img src="${video.thumb}" class="card-img thumb-prv" alt="Thumbnail"><div class="card-body">`;
 
     // Add thumb download
-    html += `<div class="btn-group w-100"><button class="btn btn-outline-info btn-sm fn-chrome-download w-100" type="button" data-i18n="card_download_thumb" data-url="${video.thumb}" data-name="${video.safeName}_thumb.jpg"></button>`;
+    html += `<div class="btn-group w-100 mb-2"><button class="btn btn-outline-info btn-sm fn-chrome-download w-100" type="button" data-i18n="card_download_thumb" data-url="${video.thumb}" data-name="${video.safeName}_thumb.jpg"></button></div>`;
 
-    html += `</div></div>`;
+    // Add stream download
+    if(video.streams) {
+        html += `<div class="btn-group w-100"><button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" data-i18n="card_download_stream"></button>`;
+        html += `<div class="dropdown-menu">`;
+        video.streams.forEach(function (streamItem) {
+            html += `<a class="dropdown-item fn-stream-download" href="#" data-url="${streamItem.src}" data-name="${streamItem.filename}">${streamItem.name}</a>`
+        });
+        html += `</div>`;
+        html += `</div>`
+    }
+
+    html += `</div>`;
 
     return html
 
@@ -126,7 +141,10 @@ window.onload = function () {
         function() {
             document.querySelectorAll(".fn-chrome-download").forEach(function (item) {
                 item.addEventListener("click", chromeDownload, this)
-            })
+            });
+            document.querySelectorAll(".fn-stream-download").forEach(function (item) {
+                item.addEventListener("click", streamDownload, this)
+            });
         }
     )
 };

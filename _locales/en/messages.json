@@ -34,5 +34,9 @@
     "card_download_thumb": {
     "message": "Download Thumbnail",
     "description": "Download Thumbnail button on video card"
+    },
+    "card_download_stream": {
+        "message": "Download Video",
+        "description": "Download video based on stream button on video card"
     }
 }

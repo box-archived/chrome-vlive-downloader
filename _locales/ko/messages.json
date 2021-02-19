@@ -34,5 +34,9 @@
     "card_download_thumb": {
         "message": "썸네일 다운로드",
         "description": "Download Thumbnail button on video card"
+    },
+    "card_download_stream": {
+        "message": "영상 다운로드",
+        "description": "Download video based on stream button on video card"
     }
 }
