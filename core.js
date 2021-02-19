@@ -324,7 +324,8 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
             result.message = "";
         } else {
             if(videoItem.thumb.search(/live\/[\d-]*\/thumb/) !== -1) {
-                raiseError("E21")
+                raiseError("E21");
+                return;
             }
             result.type = "LIVE";
             result.data.push(videoItem);
