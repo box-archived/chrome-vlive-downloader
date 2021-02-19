@@ -84,7 +84,7 @@
         "description": "oops text for stream download"
     },
     "stream_connection_error": {
-        "message": "파일을 읽어오는데 실패했습니다 (에러코드 3)",
+        "message": "파일을 읽어오는데 실패했습니다",
         "description": "Download failed text for stream download"
     },
     "stream_download_success": {
