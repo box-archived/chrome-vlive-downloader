@@ -113,6 +113,19 @@ function renderVideoCard(title, video) {
         html += `</div>`;
     }
 
+    // Add legacy video download
+    if(video.videos) {
+        html += `<hr class="mb-4" />`;
+        html += `<div class="btn-group w-100 mb-2"><button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" data-i18n="card_download_legacy"></button>`;
+        html += `<div class="dropdown-menu">`;
+        html += `<small class="text-muted p-4" style="max-width: 200px;" data-i18n="card_legacy_description"></small>`;
+        video.videos.forEach(function (streamItem) {
+            html += `<a class="dropdown-item fn-chrome-download" href="#" data-url="${streamItem.src}" data-name="${streamItem.filename}">${streamItem.name}</a>`
+        });
+        html += `</div>`;
+        html += `</div>`
+    }
+
     html += `</div>`;
 
     return html

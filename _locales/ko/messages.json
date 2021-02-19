@@ -37,7 +37,7 @@
     },
     "card_download_stream": {
         "message": "영상 다운로드",
-        "description": "Download video based on stream button on video card"
+        "description": "Download video, based on stream, button on video card"
     },
     "card_download_vtt": {
         "message": "자막 다운로드(.vtt)",
@@ -46,5 +46,13 @@
     "card_download_srt": {
         "message": "자막 다운로드(.srt)",
         "description": "Download srt caption on video card"
+    },
+    "card_download_legacy": {
+        "message": "이전 방식의 다운로드",
+        "description": "Download video, based on static cdn, button on video card"
+    },
+    "card_legacy_description": {
+        "message": "안정적이지만 느림",
+        "description": "legacy warning"
     }
 }
