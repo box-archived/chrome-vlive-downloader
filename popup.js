@@ -25,7 +25,9 @@ function chromeDownload(obj) {
 }
 
 function streamDownload(obj) {
-    console.log(obj.target.dataset)
+    const encodedName = encodeURIComponent(obj.target.dataset.name);
+    const encodedSrc = encodeURIComponent(obj.target.dataset.url);
+    window.open(`streamDownload.html?streamname=${encodedName}&streamsrc=${encodedSrc}`,"_blank");
 }
 
 function srtDownload(obj) {

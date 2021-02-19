@@ -25,8 +25,18 @@ const downloadDisplay = document.getElementById("downloadDisplay");
 const resultArea = document.getElementById("result");
 const statusPercent = document.getElementById("statusPercent");
 
+function i18nString(name) {
+    return chrome.i18n.getMessage(name)
+}
+
 // exec
 (function () {
+    // i18n load
+    const elementList = document.querySelectorAll("[data-i18n]");
+    elementList.forEach(function (element) {
+        element.innerText = i18nString(element.dataset.i18n)
+    });
+
     //getData
     const selfUrl = window.location.href;
     if (selfUrl.search(/\?/) !== -1) {
@@ -44,17 +54,17 @@ const statusPercent = document.getElementById("statusPercent");
         if(window.streamname && window.streamsrc) {
             downloadStart()
         } else {
-            displayMessage("저런...", {text: "요청을 읽는데 실패했습니다 (에러코드 2)", color: "var(--danger)"}, true, true)
+            displayMessage(i18nString("stream_oops"), {text: i18nString("stream_bad_request"), color: "var(--danger)"}, true, true)
         }
     } else {
-        displayMessage("저런...", {text: "잘못된 접근입니다 (에러코드 1)", color: "var(--danger)"}, true, true)
+        displayMessage(i18nString("stream_oops"), {text: i18nString("stream_forbidden"), color: "var(--danger)"}, true, true)
     }
 })();
 
 function ajaxOnError() {
     this.errcnt++;
     if (this.errcnt > 9) {
-        displayMessage("저런...", {text: "파일을 읽어오는데 실패했습니다 (에러코드 3)", color: "var(--danger)"}, true, true);
+        displayMessage(i18nString("stream_oops"), {text: i18nString("stream_connection_error"), color: "var(--danger)"}, true, true);
     } else {
         setTimeout(()=>ajaxGet(this.ajaxUrl, this.callback, this.errcnt, this.responseType), 500);
     }
@@ -108,11 +118,11 @@ function dnldObserver(count) {
         blobObj = new Blob(Object.values(downloadedObj), {type: 'video/mp2t'});
         downloadedObj = undefined;
         blobUrl = window.URL.createObjectURL(blobObj);
-        resultArea.innerHTML += `<a id="download" style="display: none" href="${blobUrl}" download="${window.streamname}.ts">download</a>`;
+        resultArea.innerHTML += `<a id="download" style="display: none" href="${blobUrl}" download="${window.streamname}">download</a>`;
         document.querySelector('#download').click();
         window.URL.revokeObjectURL(blobUrl);
         blobObj = undefined;
-        setTimeout(() => displayMessage("다운로드 완료!", {text: "이제 창을 닫아도 됩니다", color: "var(--green)"}, true), 700);
+        setTimeout(() => displayMessage(i18nString("stream_download_success"), {text: i18nString("stream_close"), color: "var(--green)"}, true), 700);
     }
 }
 function displayMessage(title, message, close, error) {

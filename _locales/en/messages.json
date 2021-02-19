@@ -54,5 +54,45 @@
     "card_legacy_description": {
         "message": "Stable but slow",
         "description": "Legacy warning"
+    },
+    "stream_title": {
+        "message": "빠른 다운로드",
+        "description": "Page title for stream download"
+    },
+    "stream_downloading": {
+        "message": "다운로드중...",
+        "description": "Downloading text for stream download"
+    },
+    "stream_filename": {
+        "message": "파일명",
+        "description": "Filename text for stream download"
+    },
+    "stream_do_not_close": {
+        "message": "다운로드가 완료될 때 까지 이 창을 닫지 마세요",
+        "description": "Do not close text for stream download"
+    },
+    "stream_forbidden": {
+        "message": "403: 잘못된 접근입니다",
+        "description": "forbidden error for stream download"
+    },
+    "stream_bad_request": {
+        "message": "400: 요청을 읽는데 실패했습니다",
+        "description": "bad request for stream download"
+    },
+    "stream_oops": {
+        "message": "저런...",
+        "description": "oops text for stream download"
+    },
+    "stream_connection_error": {
+        "message": "파일을 읽어오는데 실패했습니다 (에러코드 3)",
+        "description": "Download failed text for stream download"
+    },
+    "stream_download_success": {
+        "message": "다운로드 완료!",
+        "description": "Download success text for stream download"
+    },
+    "stream_close": {
+        "message": "이제 창을 닫아도 됩니다",
+        "description": "Close-able text for stream download"
     }
 }
