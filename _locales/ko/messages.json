@@ -28,7 +28,7 @@
         "description": "Permission error"
     },
     "alert_E21": {
-        "message": "[E21] 해당 방송은 라이브섬네일이 적용된 영상입니다",
+        "message": "[E21] 해당 방송은 라이브썸네일이 적용된 영상입니다",
         "description": "Is live thumbnail"
     },
     "card_download_thumb": {
