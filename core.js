@@ -231,7 +231,7 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
                 `https://www.vlive.tv/globalv-web/vam-web/fvideo/v1.0/fvideo-${value['videoId']}/playInfo`,
                 {
                     "appId": appId,
-                    "gcc": "KR",
+                    "gcc": "US",
                     "locale": v_locale
                 }
             ));
