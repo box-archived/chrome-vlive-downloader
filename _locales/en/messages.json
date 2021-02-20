@@ -1,4 +1,7 @@
 {
+    "appDesc" : {
+        "message": "Easily download VOD and post-video (+subs) of VLIVE\nThe user is responsible for the use of the extension and for the saved video"
+    },
     "alert_E0": {
         "message": "[E0] Unknown Error",
         "description": "Unknown error"

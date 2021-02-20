@@ -1,4 +1,7 @@
 {
+    "appDesc" : {
+        "message": "VLIVE의 VOD와 포스트 영상을 쉽게 다운로드 할 수 있습니다\n소프트웨어의 사용과 영상에 대한 법적 책임은 사용자에게 있습니다."
+    },
     "alert_E0": {
         "message": "[E0] 알 수 없는 오류",
         "description": "Unknown error"
