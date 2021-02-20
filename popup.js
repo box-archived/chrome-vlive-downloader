@@ -77,13 +77,16 @@ function renderAlert(i18n, type) {
     return `<div class="alert alert-${type}" data-i18n="alert_${i18n}">${i18n}</div>`
 }
 
-function renderVideoCard(video, only=true) {
+function renderVideoCard(vdResult, idx, only=true) {
+    // set vars
+    const video = vdResult.data[idx];
+
     // build up
     let mbClass = "";
     if(only) {
         mbClass = "mb-3"
     }
-    let html = `<div class="card ${mbClass}"><img src="${video.thumb}" class="card-img thumb-prv" alt="Thumbnail"><div class="card-body">`;
+    let html = `<div class="card ${mbClass}"><img src="${video.thumb}" class="card-img thumb-prv" alt="Thumbnail"><div class="video-card-overlay"><small class="card-text font-weight-bold">${vdResult.title}</small></div><div class="card-body">`;
 
     // Add thumb download
     html += `<div class="btn-group w-100 mb-2"><button class="btn btn-outline-info btn-sm fn-chrome-download w-100" type="button" data-i18n="card_download_thumb" data-url="${video.thumb}" data-name="${video.safeName}_thumb.jpg"></button></div>`;
@@ -141,7 +144,9 @@ function renderVideoCard(video, only=true) {
 
 }
 
-function renderAccordion(data) {
+function renderAccordion(vdResult) {
+
+    const data = vdResult.data;
     let html = ``;
     html += `<div class="accordion mb-2" id="videoAccordion">`;
     data.forEach(function (dataItem, index) {
@@ -157,7 +162,7 @@ function renderAccordion(data) {
 
         <div id="collapse${index}" class="collapse" aria-labelledby="header${index}" data-parent="#videoAccordion">
             <div class="card-body">
-                ${renderVideoCard(dataItem, false)}
+                ${renderVideoCard(vdResult, index, false)}
             </div>
         </div>
     </div>`;
@@ -175,16 +180,16 @@ function renderDOM(vdResult) {
         // setHTML
         setResultHTML(renderAlert(`${vdResult.message}`, "danger"), 3);
     } else if (vdType === "VIDEO" || vdType === "LIVE") {
-        html += renderVideoCard(vdResult.data[0]);
+        html += renderVideoCard(vdResult, 0);
 
         // setHTML
         setResultHTML(html, 3)
     } else if (vdType === "POST") {
         if(vdResult.data.length > 1) {
-            html += renderAccordion(vdResult.data);
+            html += renderAccordion(vdResult);
             setResultHTML(html)
         } else {
-            html += renderVideoCard(vdResult.data[0]);
+            html += renderVideoCard(vdResult, 0);
             setResultHTML(html, 3)
         }
     }
