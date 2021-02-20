@@ -15,6 +15,38 @@
 
 appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
 (function () {
+    const getCookie = function (cookieName){
+        let cookieValue;
+        if(document.cookie){
+            const array=document.cookie.split((escape(cookieName)+'='));
+            if(array.length >= 2){
+                const arraySub=array[1].split(';');
+                cookieValue=unescape(arraySub[0]);
+            }
+        }
+        return cookieValue;
+    };
+
+    // parse global
+    let userLanguage = getCookie("userLanguage");
+    const langLocale = {
+        ko: "ko_KR",
+        en: "en_US",
+        zh_cn: "zh_CN",
+        zh_tw: "zh_TW",
+        vi: "vi_VN",
+        th: "th_TH",
+        id: "in_ID",
+        es: "en_ES",
+        ja: "ja_JP"
+    };
+    if(!(userLanguage in langLocale)) {
+        userLanguage = "ko"
+    }
+
+    const v_locale = langLocale[userLanguage];
+    console.log(v_locale);
+
     // Functions
     const injectFilename = function (resultObj) {
         const safeFilename = function (dangerName, removeEmoji=false) {
@@ -181,7 +213,7 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
                 "targetMemberId,thumbnail,title,url,smartEditorAsHtml,viewerEmotionId,writtenIn," +
                 "playlist.limit(30)",
                 "gcc": "KR",
-                "locale": "ko_KR"
+                "locale": v_locale
             }
         )).catch(() => raiseError("E1"));
 
@@ -225,7 +257,7 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
                 {
                     "appId": appId,
                     "gcc": "KR",
-                    "locale": "ko_KR"
+                    "locale": v_locale
                 }
             ));
 
@@ -272,7 +304,7 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
                     "postVersion,reservation,starReactions,targetMember,targetMemberId,thumbnail,title,url," +
                     "smartEditorAsHtml,viewerEmotionId,writtenIn,playlist.limit(30)",
                 "gcc": "KR",
-                "locale": "ko_KR"
+                "locale": v_locale
             }
         )).catch(() => raiseError("E1"));
 
@@ -300,7 +332,7 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
                 "appId": appId,
                 "platformType": "PC",
                 "gcc": "KR",
-                "locale": "ko_KR"
+                "locale": v_locale
             };
             if(localStorage.getItem('vpdid2') != null) {
                 inKeyParams.vpdid2 = localStorage.getItem('vpdid2');
@@ -316,7 +348,8 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
                 `https://apis.naver.com/rmcnmv/rmcnmv/vod/play/v2.0/${vodId}`,
                 {
                     "key": inKey,
-                    "videoId": vodId
+                    "videoId": vodId,
+                    "cc": "US",
                 })).catch(() => raiseError("E1"));
 
             if("captions" in vodData.data) {
