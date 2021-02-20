@@ -15,7 +15,6 @@
 
 let blobObj;
 let blobUrl;
-let downloadedObj = {};
 let abort = false;
 const filenameDisplay = document.getElementById("filenameDisplay");
 const progressObj = document.getElementById("progressItem");
@@ -46,12 +45,12 @@ function i18nString(name) {
             const splitItem = line.split("=");
             window[splitItem[0]] = window.decodeURIComponent(splitItem[1])
         });
-        let filename = `${window.streamname}`;
+        let filename = `${window.langname}`;
         if(filename.length > 30) {
             filename = filename.slice(0, 30) + "..."
         }
         filenameDisplay.innerText = filename;
-        if(window.streamname && window.streamsrc) {
+        if(window.langname && window.streamsrc) {
             downloadStart()
         } else {
             displayMessage(i18nString("stream_oops"), {text: i18nString("stream_bad_request"), color: "var(--danger)"}, true, true)
@@ -71,36 +70,23 @@ function ajaxOnError() {
 }
 
 
-function ajaxGet(ajaxUrl, onSuccess, errcnt, responseType) {
-    if(!errcnt) {
-        errcnt = 0;
-    }
-    if(!abort) {
+function ajaxGet(url) {
+    return new Promise(function (resolve, reject) {
         const xhr = new XMLHttpRequest();
-        xhr.errcnt = errcnt;
-        xhr.ajaxUrl = ajaxUrl;
-        xhr.callback = onSuccess;
-        xhr.onerror = ajaxOnError;
+        xhr.open("GET", url);
+
+        // Set result
         xhr.onload = function () {
             if (xhr.status === 200) {
-                clearInterval(statusChecker);
-                onSuccess(xhr.response);
+                resolve(xhr.responseText);
             } else {
-                setTimeout(()=>xhr.onerror(undefined), 500);
+                reject()
             }
         };
-        xhr.open("GET", ajaxUrl);
-        if(!responseType){
-            responseType = "";
-        }
-        xhr.responseType = responseType;
+
+        // send
         xhr.send();
-        const statusChecker = setInterval(function() {
-            if(abort) {
-                xhr.abort();
-            }
-        }, 500);
-    }
+    });
 }
 
 function ajaxGetBlob(ajaxUrl, onSuccess, errcnt) {
@@ -111,14 +97,12 @@ function reportProgress(percent) {
     progressObj.style.width = `${percent}%`;
     statusPercent.innerText = `${Math.round(percent*10)/10}%`;
 }
-function dnldObserver(count) {
-    reportProgress(Object.keys(downloadedObj).length / count * 100);
-    if (Object.keys(downloadedObj).length === count) {
+function dnldObserver(percent) {
+    reportProgress(percent);
+    if (percent === 100) {
         // create blob
-        blobObj = new Blob(Object.values(downloadedObj), {type: 'video/mp2t'});
-        downloadedObj = undefined;
         blobUrl = window.URL.createObjectURL(blobObj);
-        resultArea.innerHTML += `<a id="download" style="display: none" href="${blobUrl}" download="${window.streamname}">download</a>`;
+        resultArea.innerHTML += `<a id="download" style="display: none" href="${blobUrl}" download="${window.langname}">download</a>`;
         document.querySelector('#download').click();
         window.URL.revokeObjectURL(blobUrl);
         blobObj = undefined;
@@ -139,33 +123,16 @@ function displayMessage(title, message, close, error) {
     subText.style.color = message.color;
 }
 
-function collectItemsFromM3U8(playlistUrl, m3u8)
-{
-    let req = {};
-    const regexUrl = playlistUrl.match(/(?<param>(?<=(?<=(?<=(?<base>.+(?=[0-9a-z.\-]+(?<=m3u8))))).+\?).+)/).groups;
-    const baseUrl = regexUrl.base;
-    const params = regexUrl.param;
-    const items = m3u8.match(/^#EXT.*INF:.+\s.+$/gmi);
-    const filenameExp = new RegExp(/(?<number>[0-9]+.ts(?<=(?<full>(?<=\s).+)))/i);
-    items.forEach(function (item) {
-        const regexFilename = item.match(filenameExp).groups;
-        const filename = regexFilename.full;
-        const fileNum = Number(regexFilename.number.split(".")[0]);
-        req[fileNum] = `${baseUrl}${filename}?${params}`
-    });
-    return req;
-}
-
 function downloadStart() {
-    ajaxGet(window.streamsrc, function (result) {
-        const req = collectItemsFromM3U8(window.streamsrc, result);
-        const count = Object.keys(req).length;
-        dnldObserver(count);
-        Object.keys(req).forEach(function (key) {
-            ajaxGetBlob(req[key], function (result) {
-                downloadedObj[key] = result;
-                dnldObserver(count);
-            })
-        })
+    ajaxGet(window.streamsrc).then(function (result) {
+        nowText.innerText = i18nString("srt_converting");
+        dnldObserver(50);
+        result = result.slice(result.search("1"));
+        result = result.replaceAll(/(?<=\d{2}:\d{2}:\d{2}).(?=\d{3})/gm, ",");
+        blobObj = new Blob([result], {type:'text/plain'});
+        dnldObserver(100);
+        console.log(result)
+    }).catch(function () {
+        displayMessage(i18nString("stream_oops"), {text: i18nString("stream_connection_error"), color: "var(--danger)"}, true, true);
     })
 }

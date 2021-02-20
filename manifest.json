@@ -10,10 +10,16 @@
       "default_popup": "popup.html",
       "default_title": "VLive Downloader"
    },
+   "icons": {
+      "256": "icon256.png",
+      "128": "icon128.png",
+      "48": "icon48.png",
+      "16": "icon16.png"
+   },
    "description": "Download V Live VOD and post attached video",
    "manifest_version": 2,
    "default_locale": "en",
    "name": "VLive Downloader",
    "permissions": [ "downloads", "activeTab" ],
-   "version": "1.0.0"
+   "version": "1.0.1"
 }
