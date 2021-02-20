@@ -67,14 +67,6 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
         };
         resultObj.data.forEach(function (dataItem, index) {
             dataItem.safeName = safeFilename(resultObj.title, true) + "_" + (index + 1);
-            const msFilename = `${safeFilename(resultObj.title)}_${index + 1}`;
-
-            // stream title
-            if("streams" in dataItem) {
-                dataItem.streams.forEach(function (streamItem) {
-                    streamItem.filename = `${msFilename}.${streamItem.name}.ts`
-                });
-            }
 
             // video title
             if("videos" in dataItem) {
@@ -87,7 +79,7 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
             if("captions" in dataItem) {
                 dataItem.captions.forEach(function (captionItem) {
                     captionItem.vttname = `${dataItem.safeName}.${captionItem.locale}.vtt`;
-                    captionItem.srtname = `${msFilename}.${captionItem.locale}.srt`
+                    captionItem.srtname = `${dataItem.safeName}.${captionItem.locale}.srt`
                 })
             }
         })
@@ -164,23 +156,6 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
         } else {
             return 0
         }
-    };
-
-    const processStreamList = function (streams) {
-        let streamParams = {};
-        let streamList = [];
-
-        // parse params
-        streams.keys.forEach(item => streamParams[item.name] = item.value);
-
-        streams.videos.forEach(item => streamList.push({
-            "name": item['encodingOption']['name'],
-            "src": encodedUrl(item['source'], streamParams)
-        }));
-
-        streamList.sort(resolutionSorter);
-
-        return streamList
     };
 
     const processVideoList = function (videos) {
@@ -268,14 +243,10 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
                 videoItem.captions = videoData.data['playInfo']["captions"]["list"]
             }
 
-            // Process stream info
-            videoItem.streams = processStreamList(videoData.data['playInfo'].streams[0]);
-
             // Process video info
             videoItem.videos = processVideoList(videoData.data['playInfo'].videos);
 
-            videoItem.maxIdx = videoItem.streams.length - 1;
-
+            videoItem.maxIdx = videoItem.videos.length - 1;
 
             result.data.push(videoItem)
         }
@@ -356,13 +327,10 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
                 videoItem.captions = vodData.data["captions"]["list"]
             }
 
-            // Process stream info
-            videoItem.streams = processStreamList(vodData.data.streams[0]);
-
             // Process video info
             videoItem.videos = processVideoList(vodData.data.videos);
 
-            videoItem.maxIdx = videoItem.streams.length - 1;
+            videoItem.maxIdx = videoItem.videos.length - 1;
 
             // return result
             result.data.push(videoItem);

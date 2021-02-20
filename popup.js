@@ -24,17 +24,30 @@ function chromeDownload(obj) {
     }
 }
 
-function streamDownload(obj) {
-    const encodedName = encodeURIComponent(obj.target.dataset.name);
-    const encodedSrc = encodeURIComponent(obj.target.dataset.url);
-    window.open(`streamDownload.html?streamname=${encodedName}&streamsrc=${encodedSrc}`,"_blank");
-}
-
 function srtDownload(obj) {
-    const encodedName = encodeURIComponent(obj.target.dataset.name);
-    const encodedSrc = encodeURIComponent(obj.target.dataset.url);
-    window.open(`srtDownload.html?langname=${encodedName}&streamsrc=${encodedSrc}`,"_blank");
-    console.log(obj.target.dataset)
+    const vttLoad = new Promise(function (resolve, reject) {
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", obj.target.dataset.url);
+
+        // Set result
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                resolve(xhr.response);
+            } else {
+                reject()
+            }
+        };
+        // send
+        xhr.send();
+    });
+
+    vttLoad.then(function(result) {
+        result = result.slice(result.search("1"));
+        result = result.replaceAll(/(?<=\d{2}:\d{2}:\d{2}).(?=\d{3})/gm, ",");
+        const blobObj = new Blob([result], {type: 'application/x-subrip'});
+        const blobUrl = window.URL.createObjectURL(blobObj);
+        chrome.downloads.download({url: blobUrl, filename: obj.target.dataset.name}, () => {URL.revokeObjectURL(blobUrl)});
+    });
 }
 
 function i18nLoader() {
@@ -76,11 +89,11 @@ function renderVideoCard(video, only=true) {
     html += `<div class="btn-group w-100 mb-2"><button class="btn btn-outline-info btn-sm fn-chrome-download w-100" type="button" data-i18n="card_download_thumb" data-url="${video.thumb}" data-name="${video.safeName}_thumb.jpg"></button></div>`;
 
     // Add stream download
-    if(video.streams) {
+    if(video.videos) {
         html += `<div class="btn-group w-100 mb-2"><button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" data-i18n="card_download_stream"></button>`;
         html += `<div class="dropdown-menu">`;
-        video.streams.forEach(function (streamItem) {
-            html += `<a class="dropdown-item fn-stream-download" href="#" data-url="${streamItem.src}" data-name="${streamItem.filename}">${streamItem.name}</a>`
+        video.videos.forEach(function (videoItem) {
+            html += `<a class="dropdown-item fn-chrome-download" href="#" data-url="${videoItem.src}" data-name="${videoItem.filename}">${videoItem.name}</a>`
         });
         html += `</div>`;
         html += `</div>`
@@ -120,19 +133,6 @@ function renderVideoCard(video, only=true) {
         //end of srt captions
 
         html += `</div>`;
-    }
-
-    // Add legacy video download
-    if(video.videos) {
-        html += `<hr class="mb-4" />`;
-        html += `<div class="btn-group w-100 mb-2"><button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" data-i18n="card_download_legacy"></button>`;
-        html += `<div class="dropdown-menu">`;
-        html += `<small class="text-muted p-4" style="max-width: 200px;" data-i18n="card_legacy_description"></small>`;
-        video.videos.forEach(function (streamItem) {
-            html += `<a class="dropdown-item fn-chrome-download" href="#" data-url="${streamItem.src}" data-name="${streamItem.filename}">${streamItem.name}</a>`
-        });
-        html += `</div>`;
-        html += `</div>`
     }
 
     html += `</div>`;
@@ -232,9 +232,6 @@ window.onload = function () {
         function() {
             document.querySelectorAll(".fn-chrome-download").forEach(function (item) {
                 item.addEventListener("click", chromeDownload, this)
-            });
-            document.querySelectorAll(".fn-stream-download").forEach(function (item) {
-                item.addEventListener("click", streamDownload, this)
             });
             document.querySelectorAll(".fn-srt-download").forEach(function (item) {
                 item.addEventListener("click", srtDownload, this)
