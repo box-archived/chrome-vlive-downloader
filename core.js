@@ -77,8 +77,12 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
             // caption title
             if("captions" in dataItem) {
                 dataItem.captions.forEach(function (captionItem) {
-                    captionItem.vttname = `${dataItem.safeName}.${captionItem.locale}.vtt`;
-                    captionItem.srtname = `${dataItem.safeName}.${captionItem.locale}.srt`
+                    let postfix = "";
+                    if(captionItem.type === "fan") {
+                        postfix = `.by ${captionItem['fanName']}`
+                    }
+                    captionItem.vttname = `${dataItem.safeName}.${captionItem.locale}${postfix}.vtt`;
+                    captionItem.srtname = `${dataItem.safeName}.${captionItem.locale}${postfix}.srt`;
                 })
             }
         })
