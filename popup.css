@@ -57,7 +57,7 @@ button:focus{
     word-break: break-word;
 }
 .modal-dialog-override {
-    max-width: 200px;
+    max-width: 250px;
     margin-right: auto;
     margin-left: auto;
 }
