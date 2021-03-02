@@ -149,8 +149,8 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
     };
 
     const resolutionSorter = function (a, b) {
-        const h_a = a.name.replace("P", "");
-        const h_b = b.name.replace("P", "");
+        const h_a = a.name.replace("p", "");
+        const h_b = b.name.replace("p", "");
         const distance = h_a - h_b;
         if(distance > 0) {
             return 1
