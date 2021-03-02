@@ -114,8 +114,11 @@ function renderVideoCard(vdResult, idx, only=true) {
         html += `<div class="mb-2">`;
 
         // start of vtt captions
-        html += `<div class="btn-group w-100 mb-1"><button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" data-i18n="card_download_vtt"></button>`;
-        html += `<div class="dropdown-menu">`;
+        html += `<div class="btn-group w-100 mb-1"><button class="btn btn-outline-secondary btn-sm" type="button" data-toggle="modal" data-i18n="card_download_vtt" data-target="#modal${idx}vtt"></button>`;
+
+        html += `<div class="modal fade" id="modal${idx}vtt" tabindex="-1" aria-hidden="true">`;
+        html += `<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-dialog-override">`;
+        html += `<div class="modal-content"><div class="modal-body text-center">`;
         video.captions.forEach(function (captionItem) {
             let captionLabel = captionItem.label;
             if(captionItem.subLabel) {
@@ -123,7 +126,10 @@ function renderVideoCard(vdResult, idx, only=true) {
             }
             html += `<a class="dropdown-item fn-chrome-download" href="#" data-url="${captionItem.source}" data-name="${captionItem.vttname}">${captionLabel}</a>`
         });
-        html += "</div>";
+        html += `</div>`;
+        html += `</div>`;
+        html += `</div></div>`;
+
         html += "</div>";
         // end of vtt caption
 
