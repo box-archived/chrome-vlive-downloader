@@ -61,6 +61,9 @@ button:focus{
     margin-right: auto;
     margin-left: auto;
 }
+.modal-content-override {
+    max-height: 350px!important;
+}
 .dropdown-item-override {
     padding: .1rem 1.5rem;
 }
