@@ -98,6 +98,7 @@ function renderVideoCard(vdResult, idx, only=true) {
         html += `<div class="modal fade" id="modal${idx}video" tabindex="-1" aria-hidden="true">`;
         html += `<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-dialog-override">`;
         html += `<div class="modal-content"><div class="modal-body text-center">`;
+        html += `<small class="font-weight-bold mb-2 d-block text-muted" data-i18n="card_download_stream"></small>`;
         video.videos.forEach(function (videoItem) {
             html += `<a class="dropdown-item fn-chrome-download dropdown-item-override" href="#" data-url="${videoItem.src}" data-name="${videoItem.filename}" data-dismiss="modal">${videoItem.name}</a>`
         });
@@ -119,6 +120,7 @@ function renderVideoCard(vdResult, idx, only=true) {
         html += `<div class="modal fade" id="modal${idx}vtt" tabindex="-1" aria-hidden="true">`;
         html += `<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-dialog-override">`;
         html += `<div class="modal-content"><div class="modal-body text-center">`;
+        html += `<small class="font-weight-bold mb-2 d-block text-muted" data-i18n="card_download_vtt"></small>`;
         video.captions.forEach(function (captionItem) {
             let captionLabel = captionItem.label;
             if(captionItem.subLabel) {
@@ -139,6 +141,7 @@ function renderVideoCard(vdResult, idx, only=true) {
         html += `<div class="modal fade" id="modal${idx}srt" tabindex="-1" aria-hidden="true">`;
         html += `<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-dialog-override">`;
         html += `<div class="modal-content"><div class="modal-body text-center">`;
+        html += `<small class="font-weight-bold mb-2 d-block text-muted" data-i18n="card_download_srt"></small>`;
         video.captions.forEach(function (captionItem) {
             let captionLabel = captionItem.label;
             if(captionItem.subLabel) {
