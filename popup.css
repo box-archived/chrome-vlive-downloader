@@ -56,3 +56,11 @@ button:focus{
     color: #ffffff;
     word-break: break-word;
 }
+.modal-dialog-override {
+    max-width: 200px;
+    margin-right: auto;
+    margin-left: auto;
+}
+.dropdown-item-override {
+    padding: .1rem 1.5rem;
+}

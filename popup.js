@@ -93,12 +93,18 @@ function renderVideoCard(vdResult, idx, only=true) {
 
     // Add stream download
     if(video.videos) {
-        html += `<div class="btn-group w-100 mb-2"><button class="btn btn-outline-primary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" data-i18n="card_download_stream"></button>`;
-        html += `<div class="dropdown-menu">`;
+        html += `<div class="btn-group w-100 mb-2"><button class="btn btn-primary btn-sm" type="button" data-toggle="modal" data-i18n="card_download_stream" data-target="#modal${idx}video"></button>`;
+
+        html += `<div class="modal fade" id="modal${idx}video" tabindex="-1" aria-hidden="true">`;
+        html += `<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-dialog-override">`;
+        html += `<div class="modal-content"><div class="modal-body text-center">`;
         video.videos.forEach(function (videoItem) {
-            html += `<a class="dropdown-item fn-chrome-download" href="#" data-url="${videoItem.src}" data-name="${videoItem.filename}">${videoItem.name}</a>`
+            html += `<a class="dropdown-item fn-chrome-download dropdown-item-override" href="#" data-url="${videoItem.src}" data-name="${videoItem.filename}" data-dismiss="modal">${videoItem.name}</a>`
         });
         html += `</div>`;
+        html += `</div>`;
+        html += `</div></div>`;
+
         html += `</div>`
     }
     // Add caption download
@@ -154,7 +160,7 @@ function renderAccordion(vdResult) {
         <div class="card">
         <div class="card-header py-0 px-1" id="header${index}">
             <h2 class="mb-0">
-                <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse${index}" aria-expanded="false" aria-controls="collapseOne">
+                <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse${index}" aria-expanded="false" aria-controls="collapse${index}">
                     #${index + 1}
                 </button>
             </h2>
