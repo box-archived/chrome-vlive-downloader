@@ -118,15 +118,20 @@ function renderVideoCard(vdResult, idx, only=true) {
         html += `<div class="btn-group w-100 mb-1"><button class="btn btn-outline-secondary btn-sm" type="button" data-toggle="modal" data-i18n="card_download_vtt" data-target="#modal${idx}vtt"></button>`;
 
         html += `<div class="modal fade" id="modal${idx}vtt" tabindex="-1" aria-hidden="true">`;
-        html += `<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-dialog-override">`;
-        html += `<div class="modal-content modal-content-override"><div class="modal-body text-center">`;
-        html += `<small class="font-weight-bold mb-2 d-block text-muted" data-i18n="card_download_vtt"></small>`;
+        html += `<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-dialog-override-lg">`;
+        html += `<div class="modal-content modal-content-override"><div class="modal-body">`;
+        html += `<small class="font-weight-bold mb-2 d-block text-muted text-center" data-i18n="card_download_vtt"></small>`;
         video.captions.forEach(function (captionItem) {
             let captionLabel = captionItem.label;
             if(captionItem.subLabel) {
                 captionLabel += `(${captionItem.subLabel})`
             }
-            html += `<a class="dropdown-item fn-chrome-download" href="#" data-url="${captionItem.source}" data-name="${captionItem.vttname}">${captionLabel}</a>`
+            if(captionItem.type === "fan") {
+                captionLabel += `<small class="text-muted pl-1">Fan.${captionItem.fanName}</small>`;
+            } else {
+                captionLabel += `<small class="pl-1" style="color:#ffc107;">Official</small>`;
+            }
+            html += `<a class="dropdown-item fn-chrome-download overflow-hidden to-ellipsis" href="#" data-url="${captionItem.source}" data-name="${captionItem.vttname}">${captionLabel}</a>`
         });
         html += `</div>`;
         html += `</div>`;
@@ -139,15 +144,20 @@ function renderVideoCard(vdResult, idx, only=true) {
         html += `<div class="btn-group w-100"><button class="btn btn-outline-secondary btn-sm" type="button" data-toggle="modal" data-i18n="card_download_srt" data-target="#modal${idx}srt"></button>`;
 
         html += `<div class="modal fade" id="modal${idx}srt" tabindex="-1" aria-hidden="true">`;
-        html += `<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-dialog-override">`;
-        html += `<div class="modal-content modal-content-override"><div class="modal-body text-center">`;
-        html += `<small class="font-weight-bold mb-2 d-block text-muted" data-i18n="card_download_srt"></small>`;
+        html += `<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-dialog-override-lg">`;
+        html += `<div class="modal-content modal-content-override"><div class="modal-body">`;
+        html += `<small class="font-weight-bold mb-2 d-block text-muted text-center" data-i18n="card_download_srt"></small>`;
         video.captions.forEach(function (captionItem) {
             let captionLabel = captionItem.label;
             if(captionItem.subLabel) {
                 captionLabel += `(${captionItem.subLabel})`
             }
-            html += `<a class="dropdown-item fn-srt-download" href="#" data-url="${captionItem.source}" data-name="${captionItem.srtname}">${captionLabel}</a>`
+            if(captionItem.type === "fan") {
+                captionLabel += `<small class="text-muted pl-1">Fan.${captionItem.fanName}</small>`;
+            } else {
+                captionLabel += `<small class="pl-1" style="color:#ffc107;">Official</small>`;
+            }
+            html += `<a class="dropdown-item fn-srt-download overflow-hidden to-ellipsis" href="#" data-url="${captionItem.source}" data-name="${captionItem.srtname}">${captionLabel}</a>`
         });
         html += `</div>`;
         html += `</div>`;
