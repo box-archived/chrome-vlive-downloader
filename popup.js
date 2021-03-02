@@ -134,8 +134,11 @@ function renderVideoCard(vdResult, idx, only=true) {
         // end of vtt caption
 
         // start of srt captions
-        html += `<div class="btn-group w-100"><button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" data-i18n="card_download_srt"></button>`;
-        html += `<div class="dropdown-menu">`;
+        html += `<div class="btn-group w-100"><button class="btn btn-outline-secondary btn-sm" type="button" data-toggle="modal" data-i18n="card_download_srt" data-target="#modal${idx}srt"></button>`;
+
+        html += `<div class="modal fade" id="modal${idx}srt" tabindex="-1" aria-hidden="true">`;
+        html += `<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-dialog-override">`;
+        html += `<div class="modal-content"><div class="modal-body text-center">`;
         video.captions.forEach(function (captionItem) {
             let captionLabel = captionItem.label;
             if(captionItem.subLabel) {
@@ -143,7 +146,10 @@ function renderVideoCard(vdResult, idx, only=true) {
             }
             html += `<a class="dropdown-item fn-srt-download" href="#" data-url="${captionItem.source}" data-name="${captionItem.srtname}">${captionLabel}</a>`
         });
-        html += "</div>";
+        html += `</div>`;
+        html += `</div>`;
+        html += `</div></div>`;
+
         html += "</div>";
         //end of srt captions
 
