@@ -165,7 +165,7 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
         let videoList = [];
 
         videos.list.forEach(item => videoList.push({
-            "name": item['encodingOption']['name'],
+            "name": item['encodingOption']['name'].toLowerCase(),
             "src": item['source']
         }));
 
