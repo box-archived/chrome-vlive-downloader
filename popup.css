@@ -61,8 +61,20 @@ button:focus{
     margin-right: auto;
     margin-left: auto;
 }
+.modal-dialog-override-lg {
+    max-width: 300px;
+    margin-right: auto;
+    margin-left: auto;
+}
 .modal-content-override {
     max-height: 350px!important;
+}
+
+.to-ellipsis {
+    text-overflow: ellipsis;
+}
+.to-ellipsis > small {
+    font-size: 75%;
 }
 .dropdown-item-override {
     padding: .1rem 1.5rem;
