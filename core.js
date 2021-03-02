@@ -45,7 +45,6 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
     }
 
     const v_locale = langLocale[userLanguage];
-    console.log(v_locale);
 
     // Functions
     const injectFilename = function (resultObj) {
