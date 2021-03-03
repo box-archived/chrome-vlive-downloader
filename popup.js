@@ -16,11 +16,11 @@
 function chromeDownload(obj) {
     try {
         chrome.downloads.download({
-            url: obj.target.dataset.url,
-            filename: obj.target.dataset.name
+            url: obj.dataset.url,
+            filename: obj.dataset.name
         })
     } catch (e) {
-        window.location.reload()
+        // window.location.reload()
     }
 }
 
@@ -267,10 +267,14 @@ window.onload = function () {
     ).then(
         function() {
             document.querySelectorAll(".fn-chrome-download").forEach(function (item) {
-                item.addEventListener("click", chromeDownload, this)
+                item.addEventListener("click", function () {
+                    chromeDownload(this)
+                })
             });
             document.querySelectorAll(".fn-srt-download").forEach(function (item) {
-                item.addEventListener("click", srtDownload, this)
+                item.addEventListener("click", function () {
+                    srtDownload(this)
+                })
             });
         }
     )
