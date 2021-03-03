@@ -131,7 +131,7 @@ function renderVideoCard(vdResult, idx, only=true) {
             } else {
                 captionLabel += `<small class="pl-1" style="color:#ffc107;">Official</small>`;
             }
-            html += `<a class="dropdown-item fn-chrome-download overflow-hidden to-ellipsis" href="#" data-url="${captionItem.source}" data-name="${captionItem.vttname}">${captionLabel}</a>`
+            html += `<a class="dropdown-item fn-chrome-download overflow-hidden to-ellipsis" href="#" data-url="${captionItem.source}" data-name="${captionItem.vttname}"  data-dismiss="modal">${captionLabel}</a>`
         });
         html += `</div>`;
         html += `</div>`;
@@ -157,7 +157,7 @@ function renderVideoCard(vdResult, idx, only=true) {
             } else {
                 captionLabel += `<small class="pl-1" style="color:#ffc107;">Official</small>`;
             }
-            html += `<a class="dropdown-item fn-srt-download overflow-hidden to-ellipsis" href="#" data-url="${captionItem.source}" data-name="${captionItem.srtname}">${captionLabel}</a>`
+            html += `<a class="dropdown-item fn-srt-download overflow-hidden to-ellipsis" href="#" data-url="${captionItem.source}" data-name="${captionItem.srtname}"  data-dismiss="modal">${captionLabel}</a>`
         });
         html += `</div>`;
         html += `</div>`;
