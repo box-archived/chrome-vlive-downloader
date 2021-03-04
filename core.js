@@ -79,7 +79,9 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
                 dataItem.captions.forEach(function (captionItem) {
                     let postfix = "";
                     if(captionItem.type === "fan") {
-                        postfix = `.by ${captionItem['fanName']}`
+                        postfix = ".fan"
+                    } else {
+                        postfix = ".official"
                     }
                     captionItem.vttname = `${dataItem.safeName}.${captionItem.locale}${postfix}.vtt`;
                     captionItem.srtname = `${dataItem.safeName}.${captionItem.locale}${postfix}.srt`;

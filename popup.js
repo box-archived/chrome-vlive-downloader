@@ -16,18 +16,18 @@
 function chromeDownload(obj) {
     try {
         chrome.downloads.download({
-            url: obj.target.dataset.url,
-            filename: obj.target.dataset.name
+            url: obj.dataset.url,
+            filename: obj.dataset.name
         })
     } catch (e) {
-        window.location.reload()
+        // window.location.reload()
     }
 }
 
 function srtDownload(obj) {
     const vttLoad = new Promise(function (resolve, reject) {
         const xhr = new XMLHttpRequest();
-        xhr.open("GET", obj.target.dataset.url);
+        xhr.open("GET", obj.dataset.url);
 
         // Set result
         xhr.onload = function () {
@@ -46,7 +46,7 @@ function srtDownload(obj) {
         result = result.replaceAll(/(?<=\d{2}:\d{2}:\d{2}).(?=\d{3})/gm, ",");
         const blobObj = new Blob([result], {type: 'application/x-subrip'});
         const blobUrl = window.URL.createObjectURL(blobObj);
-        chrome.downloads.download({url: blobUrl, filename: obj.target.dataset.name}, () => {URL.revokeObjectURL(blobUrl)});
+        chrome.downloads.download({url: blobUrl, filename: obj.dataset.name}, () => {URL.revokeObjectURL(blobUrl)});
     });
 }
 
@@ -267,10 +267,14 @@ window.onload = function () {
     ).then(
         function() {
             document.querySelectorAll(".fn-chrome-download").forEach(function (item) {
-                item.addEventListener("click", chromeDownload, this)
+                item.addEventListener("click", function () {
+                    chromeDownload(this)
+                })
             });
             document.querySelectorAll(".fn-srt-download").forEach(function (item) {
-                item.addEventListener("click", srtDownload, this)
+                item.addEventListener("click", function () {
+                    srtDownload(this)
+                })
             });
         }
     )
