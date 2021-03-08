@@ -77,14 +77,14 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
             // caption title
             if("captions" in dataItem) {
                 dataItem.captions.forEach(function (captionItem) {
-                    let postfix = "";
+                    let ccType = "";
                     if(captionItem.type === "fan") {
-                        postfix = ".fan"
+                        ccType = "fanSub"
                     } else {
-                        postfix = ".official"
+                        ccType = "official"
                     }
-                    captionItem.vttname = `${dataItem.safeName}.${captionItem.locale}${postfix}.vtt`;
-                    captionItem.srtname = `${dataItem.safeName}.${captionItem.locale}${postfix}.srt`;
+                    captionItem.vttname = `${dataItem.safeName}.${ccType}.${captionItem.locale}.vtt`;
+                    captionItem.srtname = `${dataItem.safeName}.${ccType}.${captionItem.locale}${ccType}.srt`;
                 })
             }
         })
