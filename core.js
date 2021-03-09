@@ -84,7 +84,7 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
                         ccType = "official"
                     }
                     captionItem.vttname = `${dataItem.safeName}.${ccType}.${captionItem.locale}.vtt`;
-                    captionItem.srtname = `${dataItem.safeName}.${ccType}.${captionItem.locale}${ccType}.srt`;
+                    captionItem.srtname = `${dataItem.safeName}.${ccType}.${captionItem.locale}.srt`;
                 })
             }
         })
