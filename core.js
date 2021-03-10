@@ -98,6 +98,8 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
                 return [true, "POST"]
             } else if(url.search("/video/") !== -1) {
                 return [true, "VIDEO"]
+            } else if(url.search("/schedule") !== -1) {
+                return  [true, "SCHEDULE"]
             } else {
                 return [false, "IN"]
             }
@@ -354,6 +356,33 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
         injectFilename(result);
         window.__VD_RESULT__ = result;
     };
+    
+    const downloadSchedule = async function (url) {
+        const scheduleId = url.match(/(?<=schedule\/)[\d-]+/);
+
+        // Load Schedule Data
+        const schedulePost = await ajaxGetJSON(encodedUrl(
+          `https://www.vlive.tv/globalv-web/vam-web/schedule/v1.0/schedule-${scheduleId}`,
+          {
+              "appId": appId,
+              "fields": "videoSeq",
+              "gcc": "KR",
+              "locale": v_locale
+          }
+        )).catch(() => raiseError("E1"));
+
+        console.log(schedulePost)
+
+        if(schedulePost.code !== 200) {
+            raiseError("E20");
+            return;
+        }
+
+        if("videoSeq" in schedulePost.data) {
+            const videoUrl = `https://www.vlive.tv/video/${schedulePost.data['videoSeq']}`;
+            await downloadVideo(videoUrl);
+        }
+    }
 
     // Main
     const url = window.location.href;
@@ -367,6 +396,8 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
             downloadPost(url).then()
         } else if(urlInfo[1] === "VIDEO") {
             downloadVideo(url).then()
+        } else if(urlInfo[1] === "SCHEDULE") {
+            downloadSchedule(url).then()
         } else {
             raiseError("E0");
         }
