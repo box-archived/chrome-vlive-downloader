@@ -381,6 +381,8 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
         if("videoSeq" in schedulePost.data) {
             const videoUrl = `https://www.vlive.tv/video/${schedulePost.data['videoSeq']}`;
             await downloadVideo(videoUrl);
+        } else {
+            raiseError("E13")
         }
     }
 
