@@ -303,6 +303,23 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
         result.title = videoPost.data['title'];
         videoItem.thumb = videoPost.data['officialVideo']['thumb'];
         if("vodId" in videoPost.data['officialVideo']) {
+            // CASE: VOD
+
+            if('onAirStartAt' in videoPost.data['officialVideo']) {
+                if(videoPost.data['officialVideo']['onAirStartAt'] > Date.now()){
+                    // CASE: Reserved VOD
+                    result.type = "LIVE";
+                    result.data.push(videoItem);
+                    result.success = true;
+                    result.message = "";
+
+                    // Force finalize data & quit function
+                    injectFilename(result);
+                    window.__VD_RESULT__ = result;
+                    return;
+                }
+            }
+
             const vodId = videoPost.data['officialVideo']['vodId'];
 
             // Load inKey
@@ -344,7 +361,9 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
             result.success = true;
             result.message = "";
         } else {
+            // CASE: LIVE
             if(videoItem.thumb.search(/live\/[\d-]*\/thumb/) !== -1) {
+                // CASE: Live thumbnail
                 raiseError("E21");
                 return;
             }
