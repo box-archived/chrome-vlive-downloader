@@ -1,0 +1,53 @@
+{
+    "appDesc" : {
+        "message": "Telecharge facilement les VOD et videos (+sous-titres) de VLIVE\nL'utilisateur est responsable de l'utilisation de l'extension et de la video telechargée"
+    },
+    "alert_E0": {
+        "message": "[E0] Erreur Inconnue",
+        "description": "Erreur Inconnue"
+    },
+    "alert_E1": {
+        "message": "[E1] Erreur Reseau",
+        "description": "Erreur Reseau"
+    },
+    "alert_E10": {
+        "message": "[E10] L'onglet actuel n'est pas du site VLIVE",
+        "description": "Pas un lien VLIVE"
+    },
+    "alert_E11": {
+        "message": "[E11] Réessayer avec un lien /video/* ou /post/*",
+        "description": "Pas un lien telechargeable"
+    },
+    "alert_E12": {
+        "message": "[E12] VOD Introuvable",
+        "description": "VOD Introuvable"
+    },
+    "alert_E13": {
+        "message": "[E13] Le post actuel ne contient pas de vidéo associée",
+        "description": "Vidéo associée introuvable"
+    },
+    "alert_E20": {
+        "message": "[E20] Vous n'avez pas la permission pour voir cette video/post",
+        "description": "Erreur de permission" 
+    },
+    "alert_E21": {
+        "message": "[E21] Le live actuel a une miniature de live.",
+        "description": "Miniature de live en cours"
+    },
+    "card_download_thumb": {
+        "message": "Telecharger la miniature",
+        "description": "Bouton Telecharger Miniature sur la vue video"
+    },
+    "card_download_stream": {
+        "message": "Telecharger Video",
+        "description": "Bouton Telecharger la video en fonction du stream sur la vue video"
+    },
+    "card_download_vtt": {
+        "message": "Telecharger Sous-Titres (.vtt)",
+        "description": "Telecharger Sous-Titres (format .vtt) sur la vue video"
+    },
+    "card_download_srt": {
+        "message": "Telecharger Sous-Titres (.srt)",
+        "description": "Telecharger Sous-Titres (format .srt) sur la vue video"
+    }
+}
