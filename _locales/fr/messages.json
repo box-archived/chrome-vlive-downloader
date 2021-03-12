@@ -4,50 +4,50 @@
     },
     "alert_E0": {
         "message": "[E0] Erreur Inconnue",
-        "description": "Erreur Inconnue"
+        "description": "Unknown error"
     },
     "alert_E1": {
         "message": "[E1] Erreur Reseau",
-        "description": "Erreur Reseau"
+        "description": "Network error"
     },
     "alert_E10": {
         "message": "[E10] L'onglet actuel n'est pas du site VLIVE",
-        "description": "Pas un lien VLIVE"
+        "description": "Not vlive link"
     },
     "alert_E11": {
         "message": "[E11] Réessayer avec un lien /video/* ou /post/*",
-        "description": "Pas un lien telechargeable"
+        "description": "Not downloadable link"
     },
     "alert_E12": {
         "message": "[E12] VOD Introuvable",
-        "description": "VOD Introuvable"
+        "description": "VOD not found"
     },
     "alert_E13": {
         "message": "[E13] Le post actuel ne contient pas de vidéo associée",
-        "description": "Vidéo associée introuvable"
+        "description": "Video attach not found"
     },
     "alert_E20": {
         "message": "[E20] Vous n'avez pas la permission pour voir cette video/post",
-        "description": "Erreur de permission" 
+        "description": "Permission error" 
     },
     "alert_E21": {
         "message": "[E21] Le live actuel a une miniature de live.",
-        "description": "Miniature de live en cours"
+        "description": "Is live thumbnail"
     },
     "card_download_thumb": {
         "message": "Telecharger la miniature",
-        "description": "Bouton Telecharger Miniature sur la vue video"
+        "description": "Download Thumbnail button on video card"
     },
     "card_download_stream": {
         "message": "Telecharger Video",
-        "description": "Bouton Telecharger la video en fonction du stream sur la vue video"
+        "description": "Download video based on stream button on video card"
     },
     "card_download_vtt": {
         "message": "Telecharger Sous-Titres (.vtt)",
-        "description": "Telecharger Sous-Titres (format .vtt) sur la vue video"
+        "description": "Download vtt caption on video card"
     },
     "card_download_srt": {
         "message": "Telecharger Sous-Titres (.srt)",
-        "description": "Telecharger Sous-Titres (format .srt) sur la vue video"
+        "description": "Download srt caption on video card"
     }
 }
