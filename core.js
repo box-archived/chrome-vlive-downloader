@@ -29,7 +29,7 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
 
     // parse global
     let userLanguage = getCookie("userLanguage");
-    const langLocale = {
+    const localeEnum = {
         ko: "ko_KR",
         en: "en_US",
         zh_cn: "zh_CN",
@@ -40,32 +40,55 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
         es: "en_ES",
         ja: "ja_JP"
     };
-    if(!(userLanguage in langLocale)) {
+    if(!(userLanguage in localeEnum)) {
         userLanguage = "ko"
     }
 
-    const v_locale = langLocale[userLanguage];
+    const userLocale = localeEnum[userLanguage];
+
+    /*
+     *   START OF COMMON CODES
+     */
+    const escapeFileName = function (dangerName, removeEmoji=false) {
+        let temp = dangerName;
+        // remove front space
+        temp = temp.replace(/^(\s+)/gs, "");
+        // < > : " / \ | ? *
+        temp = temp.replace(/[<>:"\\\/|?*~]/gi, "_");
+        // remove emoji
+        if(removeEmoji) {
+            temp = temp.replace(new RegExp(/(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/, 'g'), '_');
+        }
+        // cut after 100 letters
+        if (temp.length > 100) {
+            temp = temp.slice(0, 100) + ".."
+        }
+        return temp
+    };
+
+    const ajaxGetJSON = function (url) {
+        return new Promise(function (resolve, reject) {
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", url);
+
+            // Set result
+            xhr.onload = function () {
+                if (xhr.status === 200 || xhr.status === 403) {
+                    resolve({code: xhr.status, data: JSON.parse(xhr.responseText)});
+                } else {
+                    reject()
+                }
+            };
+
+            // send
+            xhr.send();
+        });
+    };
 
     // Functions
-    const injectFilename = function (resultObj) {
-        const safeFilename = function (dangerName, removeEmoji=false) {
-            let temp = dangerName;
-            // remove front space
-            temp = temp.replace(/^(\s+)/gs, "");
-            // < > : " / \ | ? *
-            temp = temp.replace(/[<>:"\\\/|?*~]/gi, "_");
-            // remove emoji
-            if(removeEmoji) {
-                temp = temp.replace(new RegExp(/(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/, 'g'), '_');
-            }
-            // cut after 100 letters
-            if (temp.length > 100) {
-                temp = temp.slice(0, 100) + ".."
-            }
-            return temp
-        };
+    const VLVInjectFilename = function (resultObj) {
         resultObj.data.forEach(function (dataItem, index) {
-            dataItem.safeName = safeFilename(resultObj.title, true) + "_" + (index + 1);
+            dataItem.safeName = escapeFileName(resultObj.title, true) + "_" + (index + 1);
 
             // video title
             if("videos" in dataItem) {
@@ -90,7 +113,7 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
         })
     };
 
-    const urlChecker = function (url) {
+    const VLVUrlChecker = function (url) {
         if(url.search("vlive.tv") === -1) {
             return [false, "OUT"]
         } else {
@@ -115,25 +138,6 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
             "data": []
         };
         // throw new Error(`[CODE: ${message}] VLIVE DOWNLOADER`)
-    };
-
-    const ajaxGetJSON = function (url) {
-        return new Promise(function (resolve, reject) {
-            const xhr = new XMLHttpRequest();
-            xhr.open("GET", url);
-
-            // Set result
-            xhr.onload = function () {
-                if (xhr.status === 200 || xhr.status === 403) {
-                    resolve({code: xhr.status, data: JSON.parse(xhr.responseText)});
-                } else {
-                    reject()
-                }
-            };
-
-            // send
-            xhr.send();
-        });
     };
 
     const encodedUrl = function (url, params) {
@@ -178,7 +182,15 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
         return videoList
     };
 
-    const downloadPost = async function (url) {
+    /*
+     *   END OF COMMON CODES
+     */
+
+
+    /*
+     *   START OF VLIVE CODES
+     */
+    const VLVDownloadPost = async function (url) {
         const postId = url.match(/(?<=post\/)[\d-]+/);
 
         // Load Post Data
@@ -195,7 +207,7 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
                 "targetMemberId,thumbnail,title,url,smartEditorAsHtml,viewerEmotionId,writtenIn," +
                 "playlist.limit(30)",
                 "gcc": "KR",
-                "locale": v_locale
+                "locale": userLocale
             }
         )).catch(() => raiseError("E1"));
 
@@ -208,7 +220,7 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
 
         // routing downloadVideo() when officialVideoPost
         if("officialVideo" in postData.data) {
-            await downloadVideo(`https://www.vlive.tv/video/${postData.data['officialVideo']['videoSeq']}`);
+            await VLVDownloadVideo(`https://www.vlive.tv/video/${postData.data['officialVideo']['videoSeq']}`);
             return;
         }
 
@@ -239,7 +251,7 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
                 {
                     "appId": appId,
                     "gcc": "US",
-                    "locale": v_locale
+                    "locale": userLocale
                 }
             ));
 
@@ -261,12 +273,12 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
         // return result
         result.success = true;
         result.message = "";
-        injectFilename(result);
+        VLVInjectFilename(result);
         window.__VD_RESULT__ = result;
 
     };
 
-    const downloadVideo = async function (url) {
+    const VLVDownloadVideo = async function (url) {
         const videoSeq = url.match(/(?<=video\/)[\d]+/);
 
         // Load Video Data
@@ -282,7 +294,7 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
                     "postVersion,reservation,starReactions,targetMember,targetMemberId,thumbnail,title,url," +
                     "smartEditorAsHtml,viewerEmotionId,writtenIn,playlist.limit(30)",
                 "gcc": "KR",
-                "locale": v_locale
+                "locale": userLocale
             }
         )).catch(() => raiseError("E1"));
 
@@ -311,7 +323,7 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
                 "appId": appId,
                 "platformType": "PC",
                 "gcc": "KR",
-                "locale": v_locale
+                "locale": userLocale
             };
             if(localStorage.getItem('vpdid2') != null) {
                 inKeyParams.vpdid2 = localStorage.getItem('vpdid2');
@@ -330,7 +342,7 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
                 result.message = "";
 
                 // Force finalize data & quit function
-                injectFilename(result);
+                VLVInjectFilename(result);
                 window.__VD_RESULT__ = result;
                 return;
             }
@@ -370,11 +382,11 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
             result.success = true;
             result.message = "";
         }
-        injectFilename(result);
+        VLVInjectFilename(result);
         window.__VD_RESULT__ = result;
     };
     
-    const downloadSchedule = async function (url) {
+    const VLVDownloadSchedule = async function (url) {
         const scheduleId = url.match(/(?<=schedule\/)[\d-]+/);
 
         // Load Schedule Data
@@ -384,7 +396,7 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
               "appId": appId,
               "fields": "videoSeq",
               "gcc": "KR",
-              "locale": v_locale
+              "locale": userLocale
           }
         )).catch(() => raiseError("E1"));
 
@@ -397,7 +409,7 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
 
         if("videoSeq" in schedulePost.data) {
             const videoUrl = `https://www.vlive.tv/video/${schedulePost.data['videoSeq']}`;
-            await downloadVideo(videoUrl);
+            await VLVDownloadVideo(videoUrl);
         } else {
             raiseError("E13")
         }
@@ -406,17 +418,21 @@ appId = "8c6cc7b45d2568fb668be6e05b6e5a3b";
     // Main
     const url = window.location.href;
 
+    /*
+     *   END OF COMMON CODES
+     */
+
     // Create result object
     window.__VD_RESULT__ = {"working": true};
 
-    const urlInfo = urlChecker(url);
+    const urlInfo = VLVUrlChecker(url);
     if(urlInfo[0]) {
         if(urlInfo[1] === "POST") {
-            downloadPost(url).then()
+            VLVDownloadPost(url).then()
         } else if(urlInfo[1] === "VIDEO") {
-            downloadVideo(url).then()
+            VLVDownloadVideo(url).then()
         } else if(urlInfo[1] === "SCHEDULE") {
-            downloadSchedule(url).then()
+            VLVDownloadSchedule(url).then()
         } else {
             raiseError("E0");
         }
